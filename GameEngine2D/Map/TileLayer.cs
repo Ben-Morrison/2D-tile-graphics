@@ -11,7 +11,7 @@ namespace GameEngine2D
 {
     public class TileLayer
     {
-        private static Rectangle size = new Rectangle(0, 0, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+        private static SizeF size = new SizeF(Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
 
         private bool exists;
 
@@ -48,29 +48,29 @@ namespace GameEngine2D
 
         public void Draw(Sprite s, int x, int y)
         {
-            int _x = x - EngineVariables.CameraX;
-            int _y = y - EngineVariables.CameraY;
+            int _x = x - (int)Engine.Camera.X;
+            int _y = y - (int)Engine.Camera.Y;
 
             switch (textureType)
             {
                 case TextureType.AnimatedAutoTile:
-                    Rectangle rect0 = new Rectangle(this.rectangles[0].X + (EngineVariables.anim_tile_frame * 64), this.rectangles[0].Y, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
-                    Rectangle rect1 = new Rectangle(this.rectangles[1].X + (EngineVariables.anim_tile_frame * 64), this.rectangles[1].Y, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
-                    Rectangle rect2 = new Rectangle(this.rectangles[2].X + (EngineVariables.anim_tile_frame * 64), this.rectangles[2].Y, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
-                    Rectangle rect3 = new Rectangle(this.rectangles[3].X + (EngineVariables.anim_tile_frame * 64), this.rectangles[3].Y, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    Rectangle rect0 = new Rectangle(this.rectangles[0].X + (EngineVariables.anim_tile_frame * 64), this.rectangles[0].Y, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+                    Rectangle rect1 = new Rectangle(this.rectangles[1].X + (EngineVariables.anim_tile_frame * 64), this.rectangles[1].Y, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+                    Rectangle rect2 = new Rectangle(this.rectangles[2].X + (EngineVariables.anim_tile_frame * 64), this.rectangles[2].Y, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+                    Rectangle rect3 = new Rectangle(this.rectangles[3].X + (EngineVariables.anim_tile_frame * 64), this.rectangles[3].Y, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
 
-                    s.Draw2D(EngineVariables.Textures[this.GetTexture()], rect0, size, new Point(x, y), Color.White);
-                    s.Draw2D(EngineVariables.Textures[this.GetTexture()], rect1, size, new Point(x + EngineVariables.SUBTILE_WIDTH, y), Color.White);
-                    s.Draw2D(EngineVariables.Textures[this.GetTexture()], rect2, size, new Point(x, y + EngineVariables.SUBTILE_WIDTH), Color.White);
-                    s.Draw2D(EngineVariables.Textures[this.GetTexture()], rect3, size, new Point(x + EngineVariables.SUBTILE_WIDTH, y + EngineVariables.SUBTILE_WIDTH), Color.White);
+                    s.Draw2D(Engine.ContentManager.Textures[this.GetTexture()], rect0, size, new PointF(x, y), Color.White);
+                    s.Draw2D(Engine.ContentManager.Textures[this.GetTexture()], rect1, size, new PointF(x + Default.SUBTILE_WIDTH, y), Color.White);
+                    s.Draw2D(Engine.ContentManager.Textures[this.GetTexture()], rect2, size, new PointF(x, y + Default.SUBTILE_WIDTH), Color.White);
+                    s.Draw2D(Engine.ContentManager.Textures[this.GetTexture()], rect3, size, new PointF(x + Default.SUBTILE_WIDTH, y + Default.SUBTILE_WIDTH), Color.White);
                     break;
                 case TextureType.AnimatedWaterfall:
                     break;
                 default:
-                    s.Draw2D(EngineVariables.Textures[this.GetTexture()], this.rectangles[0], size, new Point(_x, _y), Color.White);
-                    s.Draw2D(EngineVariables.Textures[this.GetTexture()], this.rectangles[1], size, new Point(_x + EngineVariables.SUBTILE_WIDTH, _y), Color.White);
-                    s.Draw2D(EngineVariables.Textures[this.GetTexture()], this.rectangles[2], size, new Point(_x, _y + EngineVariables.SUBTILE_WIDTH), Color.White);
-                    s.Draw2D(EngineVariables.Textures[this.GetTexture()], this.rectangles[3], size, new Point(_x + EngineVariables.SUBTILE_WIDTH, _y + EngineVariables.SUBTILE_WIDTH), Color.White);
+                    s.Draw2D(Engine.ContentManager.Textures[this.GetTexture()], this.rectangles[0], size, new Point(_x, _y), Color.White);
+                    s.Draw2D(Engine.ContentManager.Textures[this.GetTexture()], this.rectangles[1], size, new Point(_x + Default.SUBTILE_WIDTH, _y), Color.White);
+                    s.Draw2D(Engine.ContentManager.Textures[this.GetTexture()], this.rectangles[2], size, new Point(_x, _y + Default.SUBTILE_WIDTH), Color.White);
+                    s.Draw2D(Engine.ContentManager.Textures[this.GetTexture()], this.rectangles[3], size, new Point(_x + Default.SUBTILE_WIDTH, _y + Default.SUBTILE_WIDTH), Color.White);
                     break;
               
             }

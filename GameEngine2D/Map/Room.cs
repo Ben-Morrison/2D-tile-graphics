@@ -30,10 +30,10 @@ namespace GameEngine2D
             Tile[,] _tiles = new Tile[sizeX, sizeY];
 
             Rectangle[] rects = new Rectangle[4];
-            rects[0] = new Rectangle(0, 0, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
-            rects[1] = new Rectangle(EngineVariables.SUBTILE_WIDTH, 0, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
-            rects[2] = new Rectangle(0, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
-            rects[3] = new Rectangle(EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+            rects[0] = new Rectangle(0, 0, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+            rects[1] = new Rectangle(Default.SUBTILE_WIDTH, 0, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+            rects[2] = new Rectangle(0, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+            rects[3] = new Rectangle(Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
 
             for (int i = 0; i < sizeX; i++)
             {
@@ -84,10 +84,10 @@ namespace GameEngine2D
 
         public void Draw(Sprite s)
         {
-            int startX = (int)(EngineVariables.CameraX / EngineVariables.TILE_WIDTH);
-            int startY = (int)(EngineVariables.CameraY / EngineVariables.TILE_WIDTH);
-            int endX = (int)((EngineVariables.CameraX + EngineVariables.ScreenX) / EngineVariables.TILE_WIDTH + 1);
-            int endY = (int)((EngineVariables.CameraY + EngineVariables.ScreenY) / EngineVariables.TILE_WIDTH + 1);
+            int startX = (int)(Engine.Camera.X / Default.TILE_WIDTH);
+            int startY = (int)(Engine.Camera.Y / Default.TILE_WIDTH);
+            int endX = (int)((Engine.Camera.X + Engine.Screen.SizeX) / Default.TILE_WIDTH + 1);
+            int endY = (int)((Engine.Camera.Y + Engine.Screen.SizeY) / Default.TILE_WIDTH + 1);
             if (startX < 0)
                 startX = 0;
             if (startY < 0)
@@ -111,16 +111,16 @@ namespace GameEngine2D
             foreach (GameObject o in objects)
                 o.Draw(s);
 
-            EngineVariables.DefaultFont.DrawText(s, "Tiles: " + (this.tiles.GetLength(0) * this.tiles.GetLength(1)) , new Point(32, 32), Color.Red);
-            EngineVariables.DefaultFont.DrawText(s, "Tile Draw Calls: " + count, new Point(32, 64), Color.Red);
+            Engine.ContentManager.DefaultFont.DrawText(s, "Tiles: " + (this.tiles.GetLength(0) * this.tiles.GetLength(1)), new Point(32, 32), Color.Red);
+            Engine.ContentManager.DefaultFont.DrawText(s, "Tile Draw Calls: " + count, new Point(32, 64), Color.Red);
 
-            EngineVariables.DefaultFont.DrawText(s, "startX: " + startX, new Point(32, 96), Color.Red);
-            EngineVariables.DefaultFont.DrawText(s, "startY: " + startY, new Point(32, 128), Color.Red);
+            Engine.ContentManager.DefaultFont.DrawText(s, "startX: " + startX, new Point(32, 96), Color.Red);
+            Engine.ContentManager.DefaultFont.DrawText(s, "startY: " + startY, new Point(32, 128), Color.Red);
 
-            EngineVariables.DefaultFont.DrawText(s, "endX: " + endX, new Point(32, 160), Color.Red);
-            EngineVariables.DefaultFont.DrawText(s, "endY: " + endY, new Point(32, 192), Color.Red);
+            Engine.ContentManager.DefaultFont.DrawText(s, "endX: " + endX, new Point(32, 160), Color.Red);
+            Engine.ContentManager.DefaultFont.DrawText(s, "endY: " + endY, new Point(32, 192), Color.Red);
 
-            EngineVariables.DefaultFont.DrawText(s, "Camera: " + EngineVariables.CameraX + ", " + EngineVariables.CameraY, new Point(32, 224), Color.Red);
+            Engine.ContentManager.DefaultFont.DrawText(s, "Camera: " + Engine.Camera.X + ", " + Engine.Camera.Y, new Point(32, 224), Color.Red);
         }
     }
 }

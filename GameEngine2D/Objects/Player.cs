@@ -20,24 +20,24 @@ namespace GameEngine2D
         {
             Vector2 moveVector = new Vector2(0, 0);
 
-            if (KeyboardManager.IsKeyHeld(Key.W))
+            if (Engine.KeyboardManager.IsKeyHeld(Key.W))
                 moveVector += new Vector2(0, -1);
-            if (KeyboardManager.IsKeyHeld(Key.A))
+            if (Engine.KeyboardManager.IsKeyHeld(Key.A))
                 moveVector += new Vector2(-1, 0);
-            if (KeyboardManager.IsKeyHeld(Key.S))
+            if (Engine.KeyboardManager.IsKeyHeld(Key.S))
                 moveVector += new Vector2(0, 1);
-            if (KeyboardManager.IsKeyHeld(Key.D))
+            if (Engine.KeyboardManager.IsKeyHeld(Key.D))
                 moveVector += new Vector2(1, 0);
 
             Move(moveVector, GameVariables.DEFAULT_RUNSPEED);
 
-            if (KeyboardManager.IsKeyPressedOnce(Key.Space))
+            if (Engine.KeyboardManager.IsKeyPressedOnce(Key.Space))
                 if (this.GetFloating() == true) { this.SetFloating(false); }
                 else { this.SetFloating(true); }
 
             if (this.GetFloating())
             {
-                this.SetPos(this.GetPos() + (this.GetVelocity() * EngineVariables.GetDelta()));
+                this.SetPos(this.GetPos() + (this.GetVelocity() * Engine.StateManager.Delta));
             }
         }
     }

@@ -18,8 +18,8 @@ namespace GameEngine2D
 
         public Tile(int x, int y)
         {
-            this.x = x * EngineVariables.TILE_WIDTH;
-            this.y = y * EngineVariables.TILE_WIDTH;
+            this.x = x * Default.TILE_WIDTH;
+            this.y = y * Default.TILE_WIDTH;
 
             layers = new TileLayer[2];
             layers[0] = new TileLayer();

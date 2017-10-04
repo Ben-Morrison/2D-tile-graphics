@@ -61,15 +61,24 @@
       <DependentUpon>Editor.cs</DependentUpon>
     </Compile>
     <Compile Include="Engine.cs" />
+    <Compile Include="Engine\Camera.cs" />
+    <Compile Include="Engine\ContentManager.cs" />
+    <Compile Include="Engine\Default.cs" />
+    <Compile Include="Engine\DeviceManager.cs" />
+    <Compile Include="Engine\IDrawable.cs" />
+    <Compile Include="Engine\IPosition.cs" />
+    <Compile Include="Engine\IUpdate.cs" />
+    <Compile Include="Engine\Screen.cs" />
+    <Compile Include="Engine\StateManager.cs" />
     <Compile Include="GameForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GameForm.Designer.cs">
       <DependentUpon>GameForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Global\EngineVariables.cs" />
-    <Compile Include="Global\GameVariables.cs" />
-    <Compile Include="Input\KeyboardManager.cs" />
+    <Compile Include="Engine\EngineVariables.cs" />
+    <Compile Include="Engine\GameVariables.cs" />
+    <Compile Include="Engine\KeyboardManager.cs" />
     <Compile Include="Launcher.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -55,11 +55,11 @@ namespace GameEngine2D
                     vel = vel * GameVariables.MAX_PLAYER_VELOCITY;
                 }
 
-                vel += (dir * (acceleration * EngineVariables.GetDelta()));
+                vel += (dir * (acceleration * Engine.StateManager.Delta));
             }
             else
             {
-                float distanceMovedThisFrame = (speed * EngineVariables.GetDelta());
+                float distanceMovedThisFrame = (speed * Engine.StateManager.Delta);
                 this.SetPos(this.GetPos() + (dir * distanceMovedThisFrame));
             }
         }

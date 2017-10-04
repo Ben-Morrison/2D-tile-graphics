@@ -9,11 +9,16 @@ namespace GameEngine2D
 {
     public class KeyboardManager
     {
-        private static Microsoft.DirectX.DirectInput.Device keyboard;
-        private static CustomKeyboardState oldState;
-        private static CustomKeyboardState newState;
+        private Microsoft.DirectX.DirectInput.Device keyboard;
+        private CustomKeyboardState oldState;
+        private CustomKeyboardState newState;
 
-        public static void InitKeyboard(Control form)
+        public KeyboardManager(Control form)
+        {
+            InitKeyboard(form);
+        }
+
+        public void InitKeyboard(Control form)
         {
             keyboard = new Device(SystemGuid.Keyboard);
             keyboard.SetCooperativeLevel(form.FindForm(), CooperativeLevelFlags.NonExclusive | CooperativeLevelFlags.Background);
@@ -40,7 +45,7 @@ namespace GameEngine2D
             public void SetHeld(bool held) { this.held = held; }
         }
 
-        private static CustomKey[] keys = new CustomKey[] {
+        private CustomKey[] keys = new CustomKey[] {
             new CustomKey(Key.W),
             new CustomKey(Key.A),
             new CustomKey(Key.S),
@@ -87,7 +92,7 @@ namespace GameEngine2D
             }
         }
 
-        public static void Update()
+        public void Update()
         {
             newState = new CustomKeyboardState(keyboard);
 
@@ -107,7 +112,7 @@ namespace GameEngine2D
             oldState = newState;
         }
 
-        public static bool IsKeyPressedOnce(Key key)
+        public bool IsKeyPressedOnce(Key key)
         {
             foreach (CustomKey k in keys)
             {
@@ -119,7 +124,7 @@ namespace GameEngine2D
             return false;
         }
 
-        public static bool IsKeyHeld(Key key)
+        public bool IsKeyHeld(Key key)
         {
             foreach (CustomKey k in keys)
             {

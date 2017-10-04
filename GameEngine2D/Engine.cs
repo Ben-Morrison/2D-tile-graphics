@@ -15,63 +15,52 @@ namespace GameEngine2D
 {
     public class Engine
     {
-        private Device device;
         private Control form;
-        private Thread thread;
 
+        // Engine components
+        private static StateManager stateManager;
+        public static StateManager StateManager { get { return stateManager; } }
+
+        private static DeviceManager deviceManager;
+        public static DeviceManager DeviceManager { get { return deviceManager; } }
+
+        private static ContentManager contentManager;
+        public static ContentManager ContentManager { get { return contentManager; } }
+
+        private static KeyboardManager keyboardManager;
+        public static KeyboardManager KeyboardManager { get { return keyboardManager; } }
+
+        private static Camera camera;
+        public static Camera Camera { get { return camera; } }
+
+        private static Screen screen;
+        public static Screen Screen { get { return screen; } }
+
+        private Thread thread;
         private Stopwatch watch = new Stopwatch();
-        private float FPS = 0;
+
+        public static Map map;
 
         public Engine(Control form, bool editor)
         {
             this.form = form;
-            EngineVariables.editor = editor;
-            InitDevice();
-            LoadContent();
-            KeyboardManager.InitKeyboard(form);
-            StartLoop();
-        }
 
-        private void InitDevice()
-        {
-            PresentParameters pp = new PresentParameters();
-            pp.BackBufferWidth = 1280;
-            pp.BackBufferHeight = 720;
-            pp.BackBufferFormat = Format.A8R8G8B8;
-            pp.Windowed = true;
-            pp.SwapEffect = SwapEffect.Discard;
-            pp.DeviceWindow = this.form;
+            screen = new Screen();
 
-            device = new Device(0, DeviceType.Hardware, this.form, CreateFlags.HardwareVertexProcessing, pp);
-        }
+            stateManager = new StateManager(editor);
+            deviceManager = new DeviceManager(form, screen);
+            contentManager = new ContentManager(deviceManager.Device);
+            keyboardManager = new KeyboardManager(form);
 
-        private void LoadContent()
-        {
-            // Clear content
-            Clean();
+            camera = new Camera(0, 0);
 
-            // Create Defaults
-            System.Drawing.Font systemFont = new System.Drawing.Font("Arial", 12f, System.Drawing.FontStyle.Regular);
-            EngineVariables.DefaultFont = new Microsoft.DirectX.Direct3D.Font(device, systemFont);
-            string[] textures;
-           
-            // Get all tile textures
-            textures = Directory.GetFiles(EngineVariables.TextureDirectory + @"\tiles");
-
-            for (int i = 0; i < textures.Length; i++)
-            {
-                string name = Path.GetFileNameWithoutExtension(textures[i]);
-                ImageInformation info = TextureLoader.ImageInformationFromFile(textures[i]);
-                Texture texture = TextureLoader.FromFile(device, textures[i], info.Width, info.Height, 1, Usage.None, Format.A8R8G8B8, Pool.Managed, Filter.None, Filter.None, 0);
-                EngineVariables.Textures.Add(texture);
-                EngineVariables.TexturePaths.Add(Path.GetFullPath(textures[i]));
-                EngineVariables.TextureNames.Add(name);
-            }
+            if(!editor)
+                StartLoop();
         }
 
         private void StartLoop()
         {
-            if (!EngineVariables.editor)
+            if (!stateManager.Running)
             {
                 thread = new Thread(new ThreadStart(GameLoop));
                 thread.Start();
@@ -80,33 +69,14 @@ namespace GameEngine2D
 
         public void StopLoop()
         {
-            EngineVariables.EngineRunning = false;
+            stateManager.Running = false;
 
-            while (EngineVariables.Drawing)
+            while (stateManager.IsDrawing)
             {
                 Thread.Sleep(1);
             }
 
-            device.Dispose();
-
-            // Clean Engine Variables
-            Clean();
-
-            EngineVariables.DefaultFont = null;
-            EngineVariables.anim_tile_current = 0;
-            EngineVariables.anim_tile_frame = 0;
-
-            EngineVariables.editor = false;
-            EngineVariables.Drawing = false;
-            EngineVariables.EngineRunning = false;
-            EngineVariables.SetGameState(GameStates.Initializing);
-        }
-
-        private void Clean()
-        {
-            EngineVariables.Textures.Clear();
-            EngineVariables.TexturePaths.Clear();
-            EngineVariables.TextureNames.Clear();
+            deviceManager.Device.Dispose();
         }
 
         private void GameLoop()
@@ -116,15 +86,15 @@ namespace GameEngine2D
 
             watch.Start();
 
-            EngineVariables.EngineRunning = true;
+            stateManager.Running = true;
 
-            while (EngineVariables.EngineRunning)
+            while (stateManager.Running)
             {
                 startTime = watch.ElapsedMilliseconds;
-                EngineVariables.SetDelta((startTime - previousTime) / 1000.0f);
+                stateManager.Delta = ((startTime - previousTime) / 1000.0f);
                 previousTime = startTime;
 
-                FPS = 1 / EngineVariables.GetDelta();
+                stateManager.FPS = 1 / stateManager.Delta;
 
                 Input();
                 Update();
@@ -134,21 +104,21 @@ namespace GameEngine2D
 
         private void Input()
         {
-            KeyboardManager.Update();
+            keyboardManager.Update();
         }
 
         private void Update()
         {
             // Update Current Map
-            if (EngineVariables.map != null)
-                EngineVariables.map.Update();
+            if (map != null)
+                map.Update();
 
             Anim();
         }
 
         public void Anim()
         {
-            EngineVariables.anim_tile_current += EngineVariables.GetDelta();
+            EngineVariables.anim_tile_current += stateManager.Delta;
 
             if (EngineVariables.anim_tile_current >= EngineVariables.anim_tile_delay)
             {
@@ -162,25 +132,25 @@ namespace GameEngine2D
 
         public void Draw()
         {
-            EngineVariables.Drawing = true;
+            stateManager.IsDrawing = true;
 
-            device.Clear(ClearFlags.Target, Color.Black, 0, 0);
-            device.BeginScene();
+            deviceManager.Device.Clear(ClearFlags.Target, Color.Black, 0, 0);
+            deviceManager.Device.BeginScene();
 
-            Sprite s = new Sprite(device);
+            Sprite s = new Sprite(deviceManager.Device);
             s.Begin(SpriteFlags.AlphaBlend);
 
             // Draw Current Map
-            if (EngineVariables.map != null)
-                EngineVariables.map.Draw(s);
+            if (map != null)
+                map.Draw(s);
 
             s.End();
             s.Dispose();
-            
-            device.EndScene();
-            device.Present();
 
-            EngineVariables.Drawing = false;
+            deviceManager.Device.EndScene();
+            deviceManager.Device.Present();
+
+            stateManager.IsDrawing = false;
         }
 
         public void Save()

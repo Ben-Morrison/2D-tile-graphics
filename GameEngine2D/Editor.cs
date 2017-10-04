@@ -59,7 +59,7 @@ namespace GameEngine2D
             Room room = new Room(100, 100);
             map.AddRoom(room);
 
-            EngineVariables.map = map;
+            Engine.map = map;
         }
 
         #region Control Events
@@ -84,25 +84,25 @@ namespace GameEngine2D
 
         private void btnRight_Click(object sender, EventArgs e)
         {
-            EngineVariables.CameraX += 10;
+            Engine.Camera.Move(10, 0);
             engine.Draw();
         }
 
         private void btnLeft_Click(object sender, EventArgs e)
         {
-            EngineVariables.CameraX -= 10;
+            Engine.Camera.Move(-10, 0);
             engine.Draw();
         }
 
         private void btnUp_Click(object sender, EventArgs e)
         {
-            EngineVariables.CameraY -= 10;
+            Engine.Camera.Move(0, -10);
             engine.Draw();
         }
 
         private void btnDown_Click(object sender, EventArgs e)
         {
-            EngineVariables.CameraY += 10;
+            Engine.Camera.Move(0, 10);
             engine.Draw();
         }
 
@@ -136,7 +136,7 @@ namespace GameEngine2D
 
         private void DoBrush(MouseEventArgs e)
         {
-            Room room = EngineVariables.map.GetCurrentRoom();
+            Room room = Engine.map.GetCurrentRoom();
 
             switch(Brush)
             {
@@ -146,15 +146,15 @@ namespace GameEngine2D
                         for (int y = 0; y < room.GetTiles().GetLength(1); y++)
                         {
                             Tile tile = room.GetTiles()[i, y];
-                            if (e.X + EngineVariables.CameraX >= tile.GetX() && e.X + EngineVariables.CameraX < tile.GetX() + EngineVariables.TILE_WIDTH)
+                            if (e.X + Engine.Camera.X >= tile.GetX() && e.X + Engine.Camera.X < tile.GetX() + Default.TILE_WIDTH)
                             {
-                                if (e.Y + EngineVariables.CameraY >= tile.GetY() && e.Y + EngineVariables.CameraY < tile.GetY() + EngineVariables.TILE_WIDTH)
+                                if (e.Y + Engine.Camera.Y >= tile.GetY() && e.Y + Engine.Camera.Y < tile.GetY() + Default.TILE_WIDTH)
                                 {
                                     Rectangle[] rects = new Rectangle[4];
-                                    rects[0] = new Rectangle(textureX, textureY, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
-                                    rects[1] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH, textureY, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
-                                    rects[2] = new Rectangle(textureX, textureY + EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
-                                    rects[3] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH, textureY + EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                                    rects[0] = new Rectangle(textureX, textureY, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+                                    rects[1] = new Rectangle(textureX + Default.SUBTILE_WIDTH, textureY, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+                                    rects[2] = new Rectangle(textureX, textureY + Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+                                    rects[3] = new Rectangle(textureX + Default.SUBTILE_WIDTH, textureY + Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
 
                                     tile.SetLayer(this.selectedLayer, selectedTexture, rects, TextureType.Base, this.textureX, this.textureY);
                                 }
@@ -170,9 +170,9 @@ namespace GameEngine2D
                         for (int y = 0; y < room.GetTiles().GetLength(1); y++)
                         {
                             Tile tile = room.GetTiles()[i, y];
-                            if (e.X + EngineVariables.CameraX >= tile.GetX() && e.X + EngineVariables.CameraX < tile.GetX() + EngineVariables.TILE_WIDTH)
+                            if (e.X + Engine.Camera.X >= tile.GetX() && e.X + Engine.Camera.X < tile.GetX() + Default.TILE_WIDTH)
                             {
-                                if (e.Y + EngineVariables.CameraY >= tile.GetY() && e.Y + EngineVariables.CameraY < tile.GetY() + EngineVariables.TILE_WIDTH)
+                                if (e.Y + Engine.Camera.Y >= tile.GetY() && e.Y + Engine.Camera.Y < tile.GetY() + Default.TILE_WIDTH)
                                 {
                                     DoAutoTile(selectedTexture, i, y, false, true);
                                 }
@@ -188,9 +188,9 @@ namespace GameEngine2D
                         for (int y = 0; y < room.GetTiles().GetLength(1); y++)
                         {
                             Tile tile = room.GetTiles()[i, y];
-                            if (e.X + EngineVariables.CameraX >= tile.GetX() && e.X + EngineVariables.CameraX < tile.GetX() + EngineVariables.TILE_WIDTH)
+                            if (e.X + Engine.Camera.X >= tile.GetX() && e.X + Engine.Camera.X < tile.GetX() + Default.TILE_WIDTH)
                             {
-                                if (e.Y + EngineVariables.CameraY >= tile.GetY() && e.Y + EngineVariables.CameraY < tile.GetY() + EngineVariables.TILE_WIDTH)
+                                if (e.Y + Engine.Camera.Y >= tile.GetY() && e.Y + Engine.Camera.Y < tile.GetY() + Default.TILE_WIDTH)
                                 {
                                     DoAnimatedAutoTile(selectedTexture, i, y, false, true);
                                 }
@@ -219,201 +219,201 @@ namespace GameEngine2D
             if (checkonly)
             {
                 if (i != 0)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
                             left = true;
 
                 // Get tile to the right
-                if (i != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(0) - 1)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
+                if (i != Engine.map.GetCurrentRoom().GetTiles().GetLength(0) - 1)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
                             right = true;
 
                 // Get tile above
                 if (y != 0)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
                             up = true;
 
                 // Get tile below
-                if (y != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
+                if (y != Engine.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
                             down = true;
 
                 if (i != 0 && y != 0)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
                             leftup = true;
 
-                if (i != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != 0)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
+                if (i != Engine.map.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != 0)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
                             rightup = true;
 
-                if (i != 0 && y != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
+                if (i != 0 && y != Engine.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
                             leftdown = true;
 
-                if (i != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
+                if (i != Engine.map.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != Engine.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
                             rightdown = true;
             }
             else
             {
                 if (i != 0)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
-                        if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetTexture() == checkTexture)
-                            if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetX() == textureX &&
-                               EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetY() == textureY)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
+                        if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetTexture() == checkTexture)
+                            if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetX() == textureX &&
+                               Engine.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetY() == textureY)
                                 left = true;
 
                 // Get tile to the right
-                if (i != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(0) - 1)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
-                        if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetTexture() == checkTexture)
-                            if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetX() == textureX &&
-                                EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetY() == textureY)
+                if (i != Engine.map.GetCurrentRoom().GetTiles().GetLength(0) - 1)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
+                        if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetTexture() == checkTexture)
+                            if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetX() == textureX &&
+                                Engine.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetY() == textureY)
                                     right = true;
 
                 // Get tile above
                 if (y != 0)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
-                        if (EngineVariables.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
-                            if (EngineVariables.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetX() == textureX &&
-                                EngineVariables.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetY() == textureY)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
+                        if (Engine.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
+                            if (Engine.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetX() == textureX &&
+                                Engine.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetY() == textureY)
                                     up = true;
 
                 // Get tile below
-                if (y != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
-                        if (EngineVariables.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
-                            if (EngineVariables.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetX() == textureX &&
-                                EngineVariables.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetY() == textureY)
+                if (y != Engine.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
+                        if (Engine.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
+                            if (Engine.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetX() == textureX &&
+                                Engine.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetY() == textureY)
                                     down = true;
 
                 if (i != 0 && y != 0)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
-                        if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
-                            if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetX() == textureX &&
-                                EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetY() == textureY)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
+                        if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
+                            if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetX() == textureX &&
+                                Engine.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetY() == textureY)
                                     leftup = true;
 
-                if (i != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != 0)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
-                        if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
-                            if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetX() == textureX &&
-                                EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetY() == textureY)
+                if (i != Engine.map.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != 0)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
+                        if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
+                            if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetX() == textureX &&
+                                Engine.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetY() == textureY)
                                     rightup = true;
 
-                if (i != 0 && y != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
-                        if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
-                            if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetX() == textureX &&
-                                EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetY() == textureY)
+                if (i != 0 && y != Engine.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
+                        if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
+                            if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetX() == textureX &&
+                                Engine.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetY() == textureY)
                                     leftdown = true;
 
-                if (i != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
-                        if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
-                            if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetX() == textureX &&
-                                EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetY() == textureY)
+                if (i != Engine.map.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != Engine.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AutoTile)
+                        if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
+                            if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetX() == textureX &&
+                                Engine.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetY() == textureY)
                             rightdown = true;
 
                 Rectangle[] rects = new Rectangle[4];
 
-                rects[0] = new Rectangle(textureX, textureY, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
-                rects[1] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH, textureY, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
-                rects[2] = new Rectangle(textureX, textureY + EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
-                rects[3] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH, textureY + EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                rects[0] = new Rectangle(textureX, textureY, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+                rects[1] = new Rectangle(textureX + Default.SUBTILE_WIDTH, textureY, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+                rects[2] = new Rectangle(textureX, textureY + Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+                rects[3] = new Rectangle(textureX + Default.SUBTILE_WIDTH, textureY + Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
 
                 // Top left
                 if (left && up)
                 {
-                    rects[0] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 2, textureY + EngineVariables.SUBTILE_WIDTH * 0, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[0] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 2, textureY + Default.SUBTILE_WIDTH * 0, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (left && !up)
                 {
-                    rects[0] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 2, textureY + EngineVariables.SUBTILE_WIDTH * 2, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[0] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 2, textureY + Default.SUBTILE_WIDTH * 2, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (!left && up)
                 {
-                    rects[0] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 0, textureY + EngineVariables.SUBTILE_WIDTH * 4, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[0] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 0, textureY + Default.SUBTILE_WIDTH * 4, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (left && up && leftup)
                 {
-                    rects[0] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 2, textureY + EngineVariables.SUBTILE_WIDTH * 4, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[0] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 2, textureY + Default.SUBTILE_WIDTH * 4, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
 
                 // Top Right
                 if (up && right)
                 {
-                    rects[1] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 3, textureY + EngineVariables.SUBTILE_WIDTH * 0, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[1] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 3, textureY + Default.SUBTILE_WIDTH * 0, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (up && !right)
                 {
-                    rects[1] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 3, textureY + EngineVariables.SUBTILE_WIDTH * 4, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[1] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 3, textureY + Default.SUBTILE_WIDTH * 4, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (!up && right)
                 {
-                    rects[1] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 1, textureY + EngineVariables.SUBTILE_WIDTH * 2, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[1] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 1, textureY + Default.SUBTILE_WIDTH * 2, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (up && right && rightup)
                 {
-                    rects[1] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 1, textureY + EngineVariables.SUBTILE_WIDTH * 4, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[1] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 1, textureY + Default.SUBTILE_WIDTH * 4, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
 
                 // Bottom Left
                 if (left && down)
                 {
-                    rects[2] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 2, textureY + EngineVariables.SUBTILE_WIDTH * 1, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[2] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 2, textureY + Default.SUBTILE_WIDTH * 1, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (left && !down)
                 {
-                    rects[2] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 2, textureY + EngineVariables.SUBTILE_WIDTH * 5, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[2] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 2, textureY + Default.SUBTILE_WIDTH * 5, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (!left && down)
                 {
-                    rects[2] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 0, textureY + EngineVariables.SUBTILE_WIDTH * 3, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[2] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 0, textureY + Default.SUBTILE_WIDTH * 3, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (left && down && leftdown)
                 {
-                    rects[2] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 2, textureY + EngineVariables.SUBTILE_WIDTH * 3, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[2] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 2, textureY + Default.SUBTILE_WIDTH * 3, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
 
                 // Bottom Right
                 if (down && right)
                 {
-                    rects[3] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 3, textureY + EngineVariables.SUBTILE_WIDTH * 1, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[3] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 3, textureY + Default.SUBTILE_WIDTH * 1, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (down && !right)
                 {
-                    rects[3] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 3, textureY + EngineVariables.SUBTILE_WIDTH * 4, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[3] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 3, textureY + Default.SUBTILE_WIDTH * 4, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (!down && right)
                 {
-                    rects[3] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 1, textureY + EngineVariables.SUBTILE_WIDTH * 5, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[3] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 1, textureY + Default.SUBTILE_WIDTH * 5, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (down && right && rightdown)
                 {
-                    rects[3] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 1, textureY + EngineVariables.SUBTILE_WIDTH * 3, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[3] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 1, textureY + Default.SUBTILE_WIDTH * 3, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
 
-                EngineVariables.map.GetCurrentRoom().GetTiles()[i, y].SetLayer(selectedLayer, checkTexture, rects, TextureType.AutoTile, textureX, textureY);
+                Engine.map.GetCurrentRoom().GetTiles()[i, y].SetLayer(selectedLayer, checkTexture, rects, TextureType.AutoTile, textureX, textureY);
             }
 
             if (repeat)
             {
                 if (left)
-                    DoAutoTile(EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetTexture(), i - 1, y, false, false);
+                    DoAutoTile(Engine.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetTexture(), i - 1, y, false, false);
                 if (right)
-                    DoAutoTile(EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetTexture(), i + 1, y, false, false);
+                    DoAutoTile(Engine.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetTexture(), i + 1, y, false, false);
                 if (up)
-                    DoAutoTile(EngineVariables.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetTexture(), i, y - 1, false, false);
+                    DoAutoTile(Engine.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetTexture(), i, y - 1, false, false);
                 if (down)
-                    DoAutoTile(EngineVariables.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetTexture(), i, y + 1, false, false);
+                    DoAutoTile(Engine.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetTexture(), i, y + 1, false, false);
                 if (leftup)
-                    DoAutoTile(EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetTexture(), i - 1, y - 1, false, false);
+                    DoAutoTile(Engine.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetTexture(), i - 1, y - 1, false, false);
                 if (rightup)
-                    DoAutoTile(EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetTexture(), i + 1, y - 1, false, false);
+                    DoAutoTile(Engine.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetTexture(), i + 1, y - 1, false, false);
                 if (leftdown)
-                    DoAutoTile(EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetTexture(), i - 1, y + 1, false, false);
+                    DoAutoTile(Engine.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetTexture(), i - 1, y + 1, false, false);
                 if (rightdown)
-                    DoAutoTile(EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetTexture(), i + 1, y + 1, false, false);
+                    DoAutoTile(Engine.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetTexture(), i + 1, y + 1, false, false);
             }
         }
         private void DoAnimatedAutoTile(int checkTexture, int i, int y, bool checkonly, bool repeat)
@@ -431,201 +431,201 @@ namespace GameEngine2D
             if (checkonly)
             {
                 if (i != 0)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
                         left = true;
 
                 // Get tile to the right
-                if (i != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(0) - 1)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
+                if (i != Engine.map.GetCurrentRoom().GetTiles().GetLength(0) - 1)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
                         right = true;
 
                 // Get tile above
                 if (y != 0)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
                         up = true;
 
                 // Get tile below
-                if (y != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
+                if (y != Engine.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
                         down = true;
 
                 if (i != 0 && y != 0)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
                         leftup = true;
 
-                if (i != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != 0)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
+                if (i != Engine.map.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != 0)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
                         rightup = true;
 
-                if (i != 0 && y != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
+                if (i != 0 && y != Engine.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
                         leftdown = true;
 
-                if (i != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
+                if (i != Engine.map.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != Engine.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
                         rightdown = true;
             }
             else
             {
                 if (i != 0)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
-                        if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetTexture() == checkTexture)
-                            if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetX() == textureX &&
-                               EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetY() == textureY)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
+                        if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetTexture() == checkTexture)
+                            if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetX() == textureX &&
+                               Engine.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetY() == textureY)
                                 left = true;
 
                 // Get tile to the right
-                if (i != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(0) - 1)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
-                        if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetTexture() == checkTexture)
-                            if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetX() == textureX &&
-                                EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetY() == textureY)
+                if (i != Engine.map.GetCurrentRoom().GetTiles().GetLength(0) - 1)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
+                        if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetTexture() == checkTexture)
+                            if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetX() == textureX &&
+                                Engine.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetY() == textureY)
                                 right = true;
 
                 // Get tile above
                 if (y != 0)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
-                        if (EngineVariables.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
-                            if (EngineVariables.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetX() == textureX &&
-                                EngineVariables.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetY() == textureY)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
+                        if (Engine.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
+                            if (Engine.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetX() == textureX &&
+                                Engine.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetY() == textureY)
                                 up = true;
 
                 // Get tile below
-                if (y != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
-                        if (EngineVariables.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
-                            if (EngineVariables.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetX() == textureX &&
-                                EngineVariables.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetY() == textureY)
+                if (y != Engine.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
+                        if (Engine.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
+                            if (Engine.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetX() == textureX &&
+                                Engine.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetY() == textureY)
                                 down = true;
 
                 if (i != 0 && y != 0)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
-                        if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
-                            if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetX() == textureX &&
-                                EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetY() == textureY)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
+                        if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
+                            if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetX() == textureX &&
+                                Engine.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetY() == textureY)
                                 leftup = true;
 
-                if (i != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != 0)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
-                        if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
-                            if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetX() == textureX &&
-                                EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetY() == textureY)
+                if (i != Engine.map.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != 0)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
+                        if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
+                            if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetX() == textureX &&
+                                Engine.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetY() == textureY)
                                 rightup = true;
 
-                if (i != 0 && y != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
-                        if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
-                            if (EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetX() == textureX &&
-                                EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetY() == textureY)
+                if (i != 0 && y != Engine.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
+                        if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
+                            if (Engine.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetX() == textureX &&
+                                Engine.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetY() == textureY)
                                 leftdown = true;
 
-                if (i != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != EngineVariables.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
-                        if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
-                            if (EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetX() == textureX &&
-                                EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetY() == textureY)
+                if (i != Engine.map.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != Engine.map.GetCurrentRoom().GetTiles().GetLength(1) - 1)
+                    if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetTextureType() == TextureType.AnimatedAutoTile)
+                        if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetTexture() == checkTexture)
+                            if (Engine.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetX() == textureX &&
+                                Engine.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetY() == textureY)
                                 rightdown = true;
 
                 Rectangle[] rects = new Rectangle[4];
 
-                rects[0] = new Rectangle(textureX, textureY, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
-                rects[1] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH, textureY, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
-                rects[2] = new Rectangle(textureX, textureY + EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
-                rects[3] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH, textureY + EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                rects[0] = new Rectangle(textureX, textureY, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+                rects[1] = new Rectangle(textureX + Default.SUBTILE_WIDTH, textureY, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+                rects[2] = new Rectangle(textureX, textureY + Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+                rects[3] = new Rectangle(textureX + Default.SUBTILE_WIDTH, textureY + Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
 
                 // Top left
                 if (left && up)
                 {
-                    rects[0] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 2, textureY + EngineVariables.SUBTILE_WIDTH * 0, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[0] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 2, textureY + Default.SUBTILE_WIDTH * 0, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (left && !up)
                 {
-                    rects[0] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 2, textureY + EngineVariables.SUBTILE_WIDTH * 2, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[0] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 2, textureY + Default.SUBTILE_WIDTH * 2, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (!left && up)
                 {
-                    rects[0] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 0, textureY + EngineVariables.SUBTILE_WIDTH * 4, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[0] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 0, textureY + Default.SUBTILE_WIDTH * 4, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (left && up && leftup)
                 {
-                    rects[0] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 2, textureY + EngineVariables.SUBTILE_WIDTH * 4, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[0] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 2, textureY + Default.SUBTILE_WIDTH * 4, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
 
                 // Top Right
                 if (up && right)
                 {
-                    rects[1] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 3, textureY + EngineVariables.SUBTILE_WIDTH * 0, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[1] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 3, textureY + Default.SUBTILE_WIDTH * 0, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (up && !right)
                 {
-                    rects[1] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 3, textureY + EngineVariables.SUBTILE_WIDTH * 4, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[1] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 3, textureY + Default.SUBTILE_WIDTH * 4, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (!up && right)
                 {
-                    rects[1] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 1, textureY + EngineVariables.SUBTILE_WIDTH * 2, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[1] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 1, textureY + Default.SUBTILE_WIDTH * 2, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (up && right && rightup)
                 {
-                    rects[1] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 1, textureY + EngineVariables.SUBTILE_WIDTH * 4, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[1] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 1, textureY + Default.SUBTILE_WIDTH * 4, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
 
                 // Bottom Left
                 if (left && down)
                 {
-                    rects[2] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 2, textureY + EngineVariables.SUBTILE_WIDTH * 1, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[2] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 2, textureY + Default.SUBTILE_WIDTH * 1, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (left && !down)
                 {
-                    rects[2] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 2, textureY + EngineVariables.SUBTILE_WIDTH * 5, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[2] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 2, textureY + Default.SUBTILE_WIDTH * 5, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (!left && down)
                 {
-                    rects[2] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 0, textureY + EngineVariables.SUBTILE_WIDTH * 3, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[2] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 0, textureY + Default.SUBTILE_WIDTH * 3, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (left && down && leftdown)
                 {
-                    rects[2] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 2, textureY + EngineVariables.SUBTILE_WIDTH * 3, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[2] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 2, textureY + Default.SUBTILE_WIDTH * 3, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
 
                 // Bottom Right
                 if (down && right)
                 {
-                    rects[3] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 3, textureY + EngineVariables.SUBTILE_WIDTH * 1, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[3] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 3, textureY + Default.SUBTILE_WIDTH * 1, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (down && !right)
                 {
-                    rects[3] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 3, textureY + EngineVariables.SUBTILE_WIDTH * 4, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[3] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 3, textureY + Default.SUBTILE_WIDTH * 4, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (!down && right)
                 {
-                    rects[3] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 1, textureY + EngineVariables.SUBTILE_WIDTH * 5, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[3] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 1, textureY + Default.SUBTILE_WIDTH * 5, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
                 if (down && right && rightdown)
                 {
-                    rects[3] = new Rectangle(textureX + EngineVariables.SUBTILE_WIDTH * 1, textureY + EngineVariables.SUBTILE_WIDTH * 3, EngineVariables.SUBTILE_WIDTH, EngineVariables.SUBTILE_WIDTH);
+                    rects[3] = new Rectangle(textureX + Default.SUBTILE_WIDTH * 1, textureY + Default.SUBTILE_WIDTH * 3, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
                 }
 
-                EngineVariables.map.GetCurrentRoom().GetTiles()[i, y].SetLayer(selectedLayer, checkTexture, rects, TextureType.AnimatedAutoTile, textureX, textureY);
+                Engine.map.GetCurrentRoom().GetTiles()[i, y].SetLayer(selectedLayer, checkTexture, rects, TextureType.AnimatedAutoTile, textureX, textureY);
             }
 
             if (repeat)
             {
                 if (left)
-                    DoAnimatedAutoTile(EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetTexture(), i - 1, y, false, false);
+                    DoAnimatedAutoTile(Engine.map.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(selectedLayer).GetTexture(), i - 1, y, false, false);
                 if (right)
-                    DoAnimatedAutoTile(EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetTexture(), i + 1, y, false, false);
+                    DoAnimatedAutoTile(Engine.map.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(selectedLayer).GetTexture(), i + 1, y, false, false);
                 if (up)
-                    DoAnimatedAutoTile(EngineVariables.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetTexture(), i, y - 1, false, false);
+                    DoAnimatedAutoTile(Engine.map.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(selectedLayer).GetTexture(), i, y - 1, false, false);
                 if (down)
-                    DoAnimatedAutoTile(EngineVariables.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetTexture(), i, y + 1, false, false);
+                    DoAnimatedAutoTile(Engine.map.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(selectedLayer).GetTexture(), i, y + 1, false, false);
                 if (leftup)
-                    DoAnimatedAutoTile(EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetTexture(), i - 1, y - 1, false, false);
+                    DoAnimatedAutoTile(Engine.map.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(selectedLayer).GetTexture(), i - 1, y - 1, false, false);
                 if (rightup)
-                    DoAnimatedAutoTile(EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetTexture(), i + 1, y - 1, false, false);
+                    DoAnimatedAutoTile(Engine.map.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(selectedLayer).GetTexture(), i + 1, y - 1, false, false);
                 if (leftdown)
-                    DoAnimatedAutoTile(EngineVariables.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetTexture(), i - 1, y + 1, false, false);
+                    DoAnimatedAutoTile(Engine.map.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(selectedLayer).GetTexture(), i - 1, y + 1, false, false);
                 if (rightdown)
-                    DoAnimatedAutoTile(EngineVariables.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetTexture(), i + 1, y + 1, false, false);
+                    DoAnimatedAutoTile(Engine.map.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(selectedLayer).GetTexture(), i + 1, y + 1, false, false);
             }
         }
 

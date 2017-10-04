@@ -34,7 +34,7 @@ namespace GameEngine2D
 
             g = picPreview.CreateGraphics();
 
-            foreach (string s in EngineVariables.TextureNames)
+            foreach (string s in Engine.ContentManager.TextureNames)
                 listTextures.Items.Add(s);
 
             listTextures.SelectedIndex = selectedTexture;
@@ -43,28 +43,28 @@ namespace GameEngine2D
             {
                 case Editor.BrushType.Base:
                     radioBrush1.Select();
-                    sizeX = EngineVariables.TILE_WIDTH;
-                    sizeY = EngineVariables.TILE_WIDTH;
+                    sizeX = Default.TILE_WIDTH;
+                    sizeY = Default.TILE_WIDTH;
                     break;
                 case Editor.BrushType.AutoTile:
                     radioBrush2.Select();
-                    sizeX = EngineVariables.TILE_WIDTH * 2;
-                    sizeY = EngineVariables.TILE_WIDTH * 3;
+                    sizeX = Default.TILE_WIDTH * 2;
+                    sizeY = Default.TILE_WIDTH * 3;
                     break;
                 case Editor.BrushType.AnimatedAutoTile:
                     radioBrush3.Select();
-                    sizeX = EngineVariables.TILE_WIDTH * 6;
-                    sizeY = EngineVariables.TILE_WIDTH * 3;
+                    sizeX = Default.TILE_WIDTH * 6;
+                    sizeY = Default.TILE_WIDTH * 3;
                     break;
                 case Editor.BrushType.AnimatedWaterfall:
                     radioBrush4.Select();
-                    sizeX = EngineVariables.TILE_WIDTH * 2;
-                    sizeY = EngineVariables.TILE_WIDTH * 2;
+                    sizeX = Default.TILE_WIDTH * 2;
+                    sizeY = Default.TILE_WIDTH * 2;
                     break;
                 case Editor.BrushType.Wall:
                     radioBrush5.Select();
-                    sizeX = EngineVariables.TILE_WIDTH * 2;
-                    sizeY = EngineVariables.TILE_WIDTH * 2;
+                    sizeX = Default.TILE_WIDTH * 2;
+                    sizeY = Default.TILE_WIDTH * 2;
                     break;
             }
 
@@ -73,7 +73,7 @@ namespace GameEngine2D
 
         private void Draw()
         {
-            Image img = Image.FromFile(EngineVariables.TexturePaths[selectedTexture]);
+            Image img = Image.FromFile(Engine.ContentManager.TexturePaths[selectedTexture]);
             picTexture.Image = img;
             picTexture.Size = img.Size;
         }
@@ -101,8 +101,8 @@ namespace GameEngine2D
         {
             MouseEventArgs mouse = (MouseEventArgs)e;
 
-            textureX = mouse.X - mouse.X % EngineVariables.TILE_WIDTH;
-            textureY = mouse.Y - mouse.Y % EngineVariables.TILE_WIDTH;
+            textureX = mouse.X - mouse.X % Default.TILE_WIDTH;
+            textureY = mouse.Y - mouse.Y % Default.TILE_WIDTH;
 
             DrawPreview();
         }
@@ -111,7 +111,7 @@ namespace GameEngine2D
         {
             g.Clear(Color.White);
 
-            Image img = Image.FromFile(EngineVariables.TexturePaths[selectedTexture]);
+            Image img = Image.FromFile(Engine.ContentManager.TexturePaths[selectedTexture]);
             Bitmap bmp = new Bitmap(img);
 
             g.DrawImage(bmp, new Rectangle(0, 0, sizeX, sizeY), new Rectangle(textureX, textureY, sizeX, sizeY), GraphicsUnit.Pixel);
@@ -122,40 +122,40 @@ namespace GameEngine2D
         private void radioBrush1_CheckedChanged(object sender, EventArgs e)
         {
             brush = Editor.BrushType.Base;
-            sizeX = EngineVariables.TILE_WIDTH;
-            sizeY = EngineVariables.TILE_WIDTH;
+            sizeX = Default.TILE_WIDTH;
+            sizeY = Default.TILE_WIDTH;
             DrawPreview();
         }
 
         private void radioBrush2_CheckedChanged(object sender, EventArgs e)
         {
             brush = Editor.BrushType.AutoTile;
-            sizeX = EngineVariables.TILE_WIDTH * 2;
-            sizeY = EngineVariables.TILE_WIDTH * 3;
+            sizeX = Default.TILE_WIDTH * 2;
+            sizeY = Default.TILE_WIDTH * 3;
             DrawPreview();
         }
 
         private void radioBrush3_CheckedChanged(object sender, EventArgs e)
         {
             brush = Editor.BrushType.AnimatedAutoTile;
-            sizeX = EngineVariables.TILE_WIDTH * 6;
-            sizeY = EngineVariables.TILE_WIDTH * 3;
+            sizeX = Default.TILE_WIDTH * 6;
+            sizeY = Default.TILE_WIDTH * 3;
             DrawPreview();
         }
 
         private void radioBrush4_CheckedChanged(object sender, EventArgs e)
         {
             brush = Editor.BrushType.AnimatedWaterfall;
-            sizeX = EngineVariables.TILE_WIDTH * 2;
-            sizeY = EngineVariables.TILE_WIDTH * 2;
+            sizeX = Default.TILE_WIDTH * 2;
+            sizeY = Default.TILE_WIDTH * 2;
             DrawPreview();
         }
 
         private void radioBrush5_CheckedChanged(object sender, EventArgs e)
         {
             brush = Editor.BrushType.Wall;
-            sizeX = EngineVariables.TILE_WIDTH * 2;
-            sizeY = EngineVariables.TILE_WIDTH * 2;
+            sizeX = Default.TILE_WIDTH * 2;
+            sizeY = Default.TILE_WIDTH * 2;
             DrawPreview();
         }
 
