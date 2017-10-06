@@ -39,28 +39,56 @@ namespace GameEngine2D
         private Thread thread;
         private Stopwatch watch = new Stopwatch();
 
-        public static Map map;
+        public static Game game;
 
         public Engine(Control form, bool editor)
         {
             this.form = form;
+            Initialize(editor);
+        }
 
-            screen = new Screen();
+        public void Initialize(bool editor)
+        {
+            if (stateManager == null || stateManager.EngineState == EngineState.Stopped)
+            {
+                stateManager = new StateManager(editor);
 
-            stateManager = new StateManager(editor);
-            deviceManager = new DeviceManager(form, screen);
-            contentManager = new ContentManager(deviceManager.Device);
-            keyboardManager = new KeyboardManager(form);
+                screen = new Screen();
 
-            camera = new Camera(0, 0);
+                deviceManager = new DeviceManager(form, screen);
+                contentManager = new ContentManager(deviceManager.Device);
+                keyboardManager = new KeyboardManager(form);
 
-            if(!editor)
-                StartLoop();
+                camera = new Camera(0, 0);
+
+                stateManager.EngineState = EngineState.Initialized;
+
+                if (editor)
+                {
+                    // Set up editor to enable creating or loading a game
+                }
+                else
+                {
+                    // Load the game here then set stateManager.EngineState to Running
+
+                    StartLoop();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Engine already running");
+            }
+        }
+
+        public void Uninitialize()
+        {
+            StopLoop();
+            stateManager.EngineState = EngineState.Stopped;
         }
 
         private void StartLoop()
         {
-            if (!stateManager.Running)
+            if (stateManager.EngineState == EngineState.Running)
             {
                 thread = new Thread(new ThreadStart(GameLoop));
                 thread.Start();
@@ -69,14 +97,15 @@ namespace GameEngine2D
 
         public void StopLoop()
         {
-            stateManager.Running = false;
-
-            while (stateManager.IsDrawing)
+            if (stateManager.EngineState == EngineState.Running)
             {
-                Thread.Sleep(1);
-            }
+                while (stateManager.IsDrawing)
+                {
+                    Thread.Sleep(1);
+                }
 
-            deviceManager.Device.Dispose();
+                stateManager.EngineState = EngineState.Initialized;
+            }
         }
 
         private void GameLoop()
@@ -86,9 +115,7 @@ namespace GameEngine2D
 
             watch.Start();
 
-            stateManager.Running = true;
-
-            while (stateManager.Running)
+            while (stateManager.EngineState == EngineState.Running)
             {
                 startTime = watch.ElapsedMilliseconds;
                 stateManager.Delta = ((startTime - previousTime) / 1000.0f);
@@ -110,8 +137,8 @@ namespace GameEngine2D
         private void Update()
         {
             // Update Current Map
-            if (map != null)
-                map.Update();
+            if (game != null)
+                game.Update();
 
             Anim();
         }
@@ -141,8 +168,8 @@ namespace GameEngine2D
             s.Begin(SpriteFlags.AlphaBlend);
 
             // Draw Current Map
-            if (map != null)
-                map.Draw(s);
+            if (game != null)
+                game.Draw(s);
 
             s.End();
             s.Dispose();
@@ -151,46 +178,6 @@ namespace GameEngine2D
             deviceManager.Device.Present();
 
             stateManager.IsDrawing = false;
-        }
-
-        public void Save()
-        {
-            /*
-            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            string filename = "save.sav";
-            string fullpath = Path.Combine(path, filename);
-
-            if (File.Exists(fullpath))
-                File.Delete(fullpath);
-
-            FileStream stream = File.Open(fullpath, FileMode.Create, FileAccess.Write);
-            StreamWriter writer = new StreamWriter(stream);
-
-            writer.WriteLine();
-            
-            writer.Close();
-            */
-        }
-
-        public void Load()
-        {
-            /*
-            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            string filename = "save.sav";
-            string fullpath = Path.Combine(path, filename);
-
-            if (!File.Exists(fullpath))
-                return;
-
-            FileStream stream = File.Open(fullpath, FileMode.Open, FileAccess.Read);
-            StreamReader reader = new StreamReader(stream);
-
-            reader.ReadLine();
-
-            reader.Close();
-             * */
         }
     }
 }

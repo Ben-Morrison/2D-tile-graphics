@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GameEngine2D
 {
-    public interface IDrawable
+    public interface IDraw
     {
         void Draw();
     }

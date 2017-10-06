@@ -13,12 +13,8 @@ namespace GameEngine2D
         private int sizeX;
         private int sizeY;
 
-        private List<GameObject> objects;
-
-        private string enterScript;
-        private string exitScript;
-
         private Tile[,] tiles;
+        private List<GameObject> objects;
 
         public Room(int sizeX, int sizeY)
         {
@@ -39,8 +35,10 @@ namespace GameEngine2D
             {
                 for (int y = 0; y < sizeY; y++)
                 {
+                    GameTexture t = new GameTexture("default", TextureType.Base);
+
                     _tiles[i, y] = new Tile(i, y);
-                    _tiles[i, y].SetLayer(0, 0, rects, TextureType.Base, 0, 0);
+                    _tiles[i, y].SetLayer(0, t);
                 }
             }
 

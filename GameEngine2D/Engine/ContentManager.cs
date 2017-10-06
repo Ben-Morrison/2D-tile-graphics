@@ -5,80 +5,132 @@ using System.Text;
 using Microsoft.DirectX.Direct3D;
 using System.Windows.Forms;
 using System.IO;
+using System.Drawing;
 
 namespace GameEngine2D
 {
-    public enum TextureType
-    {
-        Base,
-        AutoTile,
-        AnimatedAutoTile,
-        AnimatedWaterfall,
-        Wall
-    }
-
-    public enum AnimationType
-    {
-        None,
-        AutoTile,
-        Waterfall
-    }
-
     public class ContentManager
     {
-        private Microsoft.DirectX.Direct3D.Font defaultFont;
+        private bool defaultLoaded = false;
+        private bool loaded = false;
 
-        private List<Texture> textures;
-        private List<string> texturePaths;
-        private List<string> textureNames;
+        private Microsoft.DirectX.Direct3D.Font defaultFont;
+        private Texture defaultTexture;
+        private Dictionary<string, Texture> textures;
+
+        private string error;
 
         public ContentManager(Device device)
         {
-            textures = new List<Texture>();
-            texturePaths = new List<string>();
-            textureNames = new List<string>();
-
-            LoadContent(device);
+            this.textures = new Dictionary<string, Texture>();
+            this.LoadDefaultContent(device);
         }
 
         public Microsoft.DirectX.Direct3D.Font DefaultFont
         {
-            get { return defaultFont; }
+            get { return this.defaultFont; }
         }
 
-        public List<Texture> Textures
+        public Texture DefaultTexture
+        {
+            get { return this.defaultTexture; }
+        }
+
+        public Dictionary<string, Texture> Textures
         {
             get { return textures; }
         }
 
-        public List<string> TexturePaths
+        public Texture GetTexture(string key)
         {
-            get { return texturePaths; }
-        }
+            Texture t;
+            bool found = Engine.ContentManager.Textures.TryGetValue(key, out t);
 
-        public List<string> TextureNames
-        {
-            get { return textureNames; }
-        }
-
-        public void LoadContent(Device device)
-        {
-            System.Drawing.Font systemFont = new System.Drawing.Font("Arial", 12f, System.Drawing.FontStyle.Regular);
-            defaultFont = new Microsoft.DirectX.Direct3D.Font(device, systemFont);
-            string[] files;
-
-            // Get all tile textures
-            files = Directory.GetFiles(Default.TEXTURE_DIRECTORY + @"\tiles");
-
-            for (int i = 0; i < files.Length; i++)
+            if (found)
+                return t;
+            else
             {
-                string name = Path.GetFileNameWithoutExtension(files[i]);
-                ImageInformation info = TextureLoader.ImageInformationFromFile(files[i]);
-                Texture texture = TextureLoader.FromFile(device, files[i], info.Width, info.Height, 1, Usage.None, Format.A8R8G8B8, Pool.Managed, Filter.None, Filter.None, 0);
-                textures.Add(texture);
-                texturePaths.Add(Path.GetFullPath(files[i]));
-                textureNames.Add(name);
+                return null;
             }
+        }
+
+        public void LoadDefaultContent(Device device)
+        {
+            if (!defaultLoaded)
+            {
+                System.Drawing.Font systemFont = new System.Drawing.Font("Arial", 12f, System.Drawing.FontStyle.Regular);
+                defaultFont = new Microsoft.DirectX.Direct3D.Font(device, systemFont);
+
+                // Creating default blue texture
+                Bitmap bitmap = new Bitmap(32, 32);
+
+                for (int i = 0; i < 32; i++)
+                {
+                    for (int y = 0; y < 32; y++)
+                    {
+                        bitmap.SetPixel(i, y, Color.Blue);
+                    }
+                }
+
+                this.defaultTexture = new Texture(device, bitmap, Usage.None, Pool.Managed);
+            }
+        }
+
+        public Game LoadGame(string path)
+        {
+            // Get textures from the file
+            // Get other content from the file
+
+            // Get the rooms, tiles, objects and everything else
+
+            return new Game();
+        }
+
+        public void UnloadGame()
+        {
+
+        }
+
+        public void LoadTexture(Device device)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "PNG Image (*.png)|*.png";
+
+            DialogResult result = dialog.ShowDialog();
+            if(result == DialogResult.OK)
+            {
+                try
+                {
+                    string path = dialog.FileName;
+                    string fileName = Path.GetFileNameWithoutExtension(path);
+
+                    ImageInformation info = TextureLoader.ImageInformationFromFile(path);
+                    Texture texture = TextureLoader.FromFile(device, path, info.Width, info.Height, 1, Usage.None, Format.A8R8G8B8, Pool.Managed, Filter.None, Filter.None, 0);
+                    
+                    if(textures.ContainsKey(fileName))
+                    {
+                        MessageBox.Show("Texture already added", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        textures.Add(fileName, texture);
+                    }
+                }
+                catch(Exception e)
+                {
+                    error = e.Message;
+                }
+            } 
+        }
+
+        public void RemoveTexture(string name)
+        {
+            // Check all tiles and objects that may be using this texture
+        }
+
+        public string GetError()
+        {
+            return this.error;
         }
     }
 }

@@ -7,8 +7,11 @@ using System.Windows.Forms;
 
 namespace GameEngine2D
 {
-    public class Map
+    public class Game
     {
+        private string name;
+        private string path;
+
         private List<Room> rooms;
         private int currentRoom = 0;
 
@@ -18,7 +21,7 @@ namespace GameEngine2D
 
         private Dictionary<string, object> Variables;
 
-        public Map()
+        public Game()
         {
             rooms = new List<Room>();
             Variables = new Dictionary<string, object>();
@@ -41,7 +44,14 @@ namespace GameEngine2D
 
         public Room GetCurrentRoom()
         {
-            return this.rooms[currentRoom];
+            if (rooms.Count == 0)
+            {
+                return null;
+            }
+            else
+            {
+                return this.rooms[currentRoom];
+            }
         }
 
         public void SetNewRoom(int room)
@@ -74,12 +84,26 @@ namespace GameEngine2D
 
         public void Update()
         {
-            rooms[currentRoom].Update();
+            if (rooms.Count == 0)
+            {
+
+            }
+            else
+            {
+                rooms[currentRoom].Update();
+            }
         }
 
         public void Draw(Sprite s)
         {
-            rooms[currentRoom].Draw(s);
+            if (rooms.Count == 0)
+            {
+
+            }
+            else
+            {
+                rooms[currentRoom].Draw(s);
+            }
         }
     }
 }

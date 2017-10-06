@@ -71,6 +71,9 @@
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnEditor);
             this.Controls.Add(this.btnPlay);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Launcher";
             this.Text = "Launcher";
             this.ResumeLayout(false);

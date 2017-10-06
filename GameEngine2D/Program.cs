@@ -8,7 +8,8 @@ namespace GameEngine2D
 {
     static class Program
     {
-        public static void Main()
+        [STAThread]
+        public static void Main(string[] args)
         {
             Application.Run(new Launcher());
         }

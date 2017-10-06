@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.radioBrush5 = new System.Windows.Forms.RadioButton();
-            this.radioBrush4 = new System.Windows.Forms.RadioButton();
             this.radioBrush3 = new System.Windows.Forms.RadioButton();
             this.radioBrush2 = new System.Windows.Forms.RadioButton();
             this.radioBrush1 = new System.Windows.Forms.RadioButton();
@@ -43,47 +41,23 @@
             this.label3 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.picTexture = new System.Windows.Forms.PictureBox();
+            this.btnAdd = new System.Windows.Forms.Button();
             this.panelPreview.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picTexture)).BeginInit();
             this.SuspendLayout();
             // 
-            // radioBrush5
-            // 
-            this.radioBrush5.AutoSize = true;
-            this.radioBrush5.Location = new System.Drawing.Point(917, 124);
-            this.radioBrush5.Name = "radioBrush5";
-            this.radioBrush5.Size = new System.Drawing.Size(46, 17);
-            this.radioBrush5.TabIndex = 17;
-            this.radioBrush5.TabStop = true;
-            this.radioBrush5.Text = "Wall";
-            this.radioBrush5.UseVisualStyleBackColor = true;
-            this.radioBrush5.CheckedChanged += new System.EventHandler(this.radioBrush5_CheckedChanged);
-            // 
-            // radioBrush4
-            // 
-            this.radioBrush4.AutoSize = true;
-            this.radioBrush4.Location = new System.Drawing.Point(917, 101);
-            this.radioBrush4.Name = "radioBrush4";
-            this.radioBrush4.Size = new System.Drawing.Size(111, 17);
-            this.radioBrush4.TabIndex = 16;
-            this.radioBrush4.TabStop = true;
-            this.radioBrush4.Text = "AnimatedWaterfall";
-            this.radioBrush4.UseVisualStyleBackColor = true;
-            this.radioBrush4.CheckedChanged += new System.EventHandler(this.radioBrush4_CheckedChanged);
-            // 
             // radioBrush3
             // 
             this.radioBrush3.AutoSize = true;
             this.radioBrush3.Location = new System.Drawing.Point(917, 78);
             this.radioBrush3.Name = "radioBrush3";
-            this.radioBrush3.Size = new System.Drawing.Size(108, 17);
-            this.radioBrush3.TabIndex = 15;
+            this.radioBrush3.Size = new System.Drawing.Size(46, 17);
+            this.radioBrush3.TabIndex = 17;
             this.radioBrush3.TabStop = true;
-            this.radioBrush3.Text = "AnimatedAutoTile";
+            this.radioBrush3.Text = "Wall";
             this.radioBrush3.UseVisualStyleBackColor = true;
-            this.radioBrush3.CheckedChanged += new System.EventHandler(this.radioBrush3_CheckedChanged);
             // 
             // radioBrush2
             // 
@@ -111,7 +85,7 @@
             // 
             // btnSelect
             // 
-            this.btnSelect.Location = new System.Drawing.Point(918, 489);
+            this.btnSelect.Location = new System.Drawing.Point(1031, 489);
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.Size = new System.Drawing.Size(75, 23);
             this.btnSelect.TabIndex = 18;
@@ -138,7 +112,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(999, 489);
+            this.btnExit.Location = new System.Drawing.Point(1112, 489);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.TabIndex = 20;
@@ -198,13 +172,23 @@
             this.picTexture.Size = new System.Drawing.Size(900, 500);
             this.picTexture.TabIndex = 26;
             this.picTexture.TabStop = false;
-            this.picTexture.Click += new System.EventHandler(this.picPreview_Click);
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.Location = new System.Drawing.Point(950, 489);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnAdd.TabIndex = 26;
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // TextureForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1199, 524);
+            this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.listTextures);
@@ -213,8 +197,6 @@
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnSelect);
             this.Controls.Add(this.panelPreview);
-            this.Controls.Add(this.radioBrush5);
-            this.Controls.Add(this.radioBrush4);
             this.Controls.Add(this.radioBrush3);
             this.Controls.Add(this.radioBrush2);
             this.Controls.Add(this.radioBrush1);
@@ -231,8 +213,6 @@
 
         #endregion
 
-        private System.Windows.Forms.RadioButton radioBrush5;
-        private System.Windows.Forms.RadioButton radioBrush4;
         private System.Windows.Forms.RadioButton radioBrush3;
         private System.Windows.Forms.RadioButton radioBrush2;
         private System.Windows.Forms.RadioButton radioBrush1;
@@ -246,5 +226,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox picTexture;
         private System.Windows.Forms.PictureBox picPreview;
+        private System.Windows.Forms.Button btnAdd;
     }
 }

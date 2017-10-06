@@ -19,14 +19,13 @@ C:\Users\Ben\Documents\Visual Studio 2010\Projects\GameEngine2Dv2\GameEngine2D\o
 C:\Users\Ben\Documents\Visual Studio 2010\Projects\GameEngine2Dv2\GameEngine2D\bin\Debug\GameEngine2D.exe
 C:\Users\Ben\Documents\Visual Studio 2010\Projects\GameEngine2Dv2\GameEngine2D\bin\Debug\GameEngine2D.pdb
 C:\Users\Ben\Documents\Visual Studio 2010\Projects\GameEngine2Dv2\GameEngine2D\obj\x86\Debug\GameEngine2D.TextureForm.resources
-E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\obj\x86\Debug\GameEngine2D.csprojResolveAssemblyReference.cache
+E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\bin\Debug\GameEngine2D.exe.config
+E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\bin\Debug\GameEngine2D.exe
+E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\bin\Debug\GameEngine2D.pdb
 E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\obj\x86\Debug\GameEngine2D.Editor.resources
 E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\obj\x86\Debug\GameEngine2D.GameForm.resources
 E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\obj\x86\Debug\GameEngine2D.Launcher.resources
 E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\obj\x86\Debug\GameEngine2D.TextureForm.resources
 E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\obj\x86\Debug\GameEngine2D.csproj.GenerateResource.Cache
 E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\obj\x86\Debug\GameEngine2D.exe
-E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\bin\Debug\GameEngine2D.exe.config
-E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\bin\Debug\GameEngine2D.exe
-E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\bin\Debug\GameEngine2D.pdb
 E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\obj\x86\Debug\GameEngine2D.pdb

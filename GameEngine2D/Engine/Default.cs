@@ -11,6 +11,8 @@ namespace GameEngine2D
         public static readonly int      SCREEN_SIZE_X = 1280;
         public static readonly int      SCREEN_SIZE_Y = 720;
 
+        public static readonly string   FILE_TYPE = ".gm";
+
         public static readonly string   CONTENT_DIRECTORY = Application.StartupPath + @"\content";
         public static readonly string   TEXTURE_DIRECTORY = CONTENT_DIRECTORY + @"\textures";
 

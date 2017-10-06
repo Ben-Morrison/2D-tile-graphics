@@ -11,34 +11,28 @@ namespace GameEngine2D
 {
     public class Tile
     {
-        private int x;
-        private int y;
-
+        private bool solid;
+        private Point position;
         private TileLayer[] layers;
 
         public Tile(int x, int y)
         {
-            this.x = x * Default.TILE_WIDTH;
-            this.y = y * Default.TILE_WIDTH;
+            this.position = new Point(x * Default.TILE_WIDTH, y * Default.TILE_WIDTH);
 
             layers = new TileLayer[2];
             layers[0] = new TileLayer();
             layers[1] = new TileLayer();
         }
 
-        public int GetX()
+        public Point Position
         {
-            return this.x;
+            get { return this.position; }
+            set { this.position = value; }
         }
 
-        public int GetY()
+        public void SetLayer(int layer, GameTexture gameTexture)
         {
-            return this.y;
-        }
-
-        public void SetLayer(int layer, int texture, Rectangle[] rectangles, TextureType type, int x, int y)
-        {
-            this.layers[layer] = new TileLayer(texture, rectangles, type, x, y);
+            this.layers[layer] = new TileLayer(gameTexture);
         }
 
         public TileLayer GetLayer(int layer)
@@ -48,7 +42,7 @@ namespace GameEngine2D
 
         public void DeleteLayer(int layer)
         {
-            this.layers[layer].SetExists(false);
+            this.layers[layer].Exists = false;
         }
 
         public TileLayer[] GetLayers()
@@ -59,9 +53,9 @@ namespace GameEngine2D
         public void Draw(Sprite s)
         {
             foreach(TileLayer layer in layers)
-                if (layer.GetExists())
+                if (layer.Exists)
                 {
-                    layer.Draw(s, x, y);
+                    layer.Draw(s, position);
                 }
         }
     }

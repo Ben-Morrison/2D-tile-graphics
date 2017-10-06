@@ -13,6 +13,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -25,7 +26,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -65,7 +65,8 @@
     <Compile Include="Engine\ContentManager.cs" />
     <Compile Include="Engine\Default.cs" />
     <Compile Include="Engine\DeviceManager.cs" />
-    <Compile Include="Engine\IDrawable.cs" />
+    <Compile Include="Engine\GameTexture.cs" />
+    <Compile Include="Engine\IDraw.cs" />
     <Compile Include="Engine\IPosition.cs" />
     <Compile Include="Engine\IUpdate.cs" />
     <Compile Include="Engine\Screen.cs" />
@@ -85,7 +86,7 @@
     <Compile Include="Launcher.Designer.cs">
       <DependentUpon>Launcher.cs</DependentUpon>
     </Compile>
-    <Compile Include="Map\Map.cs" />
+    <Compile Include="Map\Game.cs" />
     <Compile Include="Map\Room.cs" />
     <Compile Include="Objects\GameObject.cs" />
     <Compile Include="Objects\MovableObject.cs" />
@@ -181,7 +182,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Editor\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
