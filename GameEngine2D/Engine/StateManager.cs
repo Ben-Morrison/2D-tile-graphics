@@ -58,6 +58,11 @@ namespace GameEngine2D
             set { this.gameState = value; }
         }
 
+        public bool Editor
+        {
+            get { return this.editor; }
+        }
+
         public bool IsDrawing
         {
             get { return this.isDrawing; }

@@ -146,11 +146,9 @@ namespace GameEngine2D
         private void menuNew_Click(object sender, EventArgs e)
         {
             Game game = new Game();
-
-            Room room = new Room(6, 8);
+            Room room = new Room(16, 10);
             game.AddRoom(room);
             game.SetCurrentRoom(0);
-
             Engine.game = game;
             Engine.StateManager.EngineState = EngineState.GameRunning;
 
