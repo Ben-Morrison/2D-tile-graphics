@@ -11,7 +11,7 @@ namespace GameEngine2D
     {
         Stopped,
         Initialized,
-        Running
+        GameRunning
     }
 
     public enum GameState

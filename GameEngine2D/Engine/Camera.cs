@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 
 namespace GameEngine2D
 {
@@ -9,14 +10,13 @@ namespace GameEngine2D
     {
         Static,
         Following,
-        Moving
+        Moving,
+        Transitioning
     }
 
-    public class Camera : IUpdate
+    public class Camera : IUpdate, IPosition
     {
-        private int x;
-        private int y;
-
+        private Point position;
         IPosition following;
 
         CameraState state;
@@ -28,9 +28,7 @@ namespace GameEngine2D
         /// <param name="y"></param>
         public Camera(int x, int y)
         {
-            this.x = x;
-            this.x = y;
-
+            this.position = new Point(x, y);
             this.state = CameraState.Static;
         }
 
@@ -43,48 +41,49 @@ namespace GameEngine2D
             this.Follow(pos);
         }
 
-        public int X
+        public Point Position
         {
-            get { return this.x; }
-        }
-
-        public int Y
-        {
-            get { return this.y; }
+            get { return this.position; }
+            set { this.position = value; }
         }
 
         public void LookAt(IPosition pos)
         {
-            this.x = pos.X;
-            this.x = pos.Y;
-
+            this.position = pos.Position;
             this.state = CameraState.Static;
         }
 
         public void LookAt(int x, int y)
         {
-            this.x = x;
-            this.x = y;
-
+            this.position.X = x;
+            this.position.Y = y;
             this.state = CameraState.Static;
         }
 
         public void Follow(IPosition pos)
         {
             this.following = pos;
-
-            this.x = following.X;
-            this.x = following.Y;
-
+            this.position = this.following.Position;
             this.state = CameraState.Following;
         }
 
         public void Move(int x, int y)
         {
-            this.x += x;
-            this.y += y;
-
+            this.position.X += x;
+            this.position.Y += y;
             this.state = CameraState.Moving;
+        }
+
+        /// <summary>
+        /// Moves the camera at a given speed towards a given position then stops
+        /// </summary>
+        /// <param name="x">The X position</param>
+        /// <param name="y">The Y position</param>
+        /// <param name="speed">How long it should take</param>
+        /// <param name="after"></param>
+        public void Transition(int x, int y, int speed, CameraState after)
+        {
+            
         }
 
         public void Update()

@@ -29,3 +29,4 @@ E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\obj\x8
 E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\obj\x86\Debug\GameEngine2D.csproj.GenerateResource.Cache
 E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\obj\x86\Debug\GameEngine2D.exe
 E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\obj\x86\Debug\GameEngine2D.pdb
+E:\Software Engineering\GitHub Repositories\2D-tile-graphics\GameEngine2D\obj\x86\Debug\GameEngine2D.csprojResolveAssemblyReference.cache

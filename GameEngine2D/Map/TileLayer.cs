@@ -11,34 +11,11 @@ namespace GameEngine2D
 {
     public class TileLayer
     {
-        private static readonly SizeF TILE_SIZE = new SizeF(Default.TILE_WIDTH, Default.TILE_WIDTH);
-        private static readonly SizeF SUBTILE_SIZE = new SizeF(Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
-
-        private bool exists;
         private GameTexture texture;
-
-        public TileLayer()
-        {
-            this.exists = false;
-        }
 
         public TileLayer(GameTexture texture)
         {
             this.texture = texture;
-            this.exists = true;
-        }
-
-        public bool Exists
-        {
-            get { return this.exists; }
-            set
-            {
-                if (value == false)
-                {
-                    this.texture = null;
-                    this.exists = value;
-                }
-            }
         }
 
         public GameTexture GameTexture
@@ -49,13 +26,16 @@ namespace GameEngine2D
 
         public void Draw(Sprite s, Point position)
         {
-            int _x = position.X - (int)Engine.Camera.X;
-            int _y = position.Y - (int)Engine.Camera.Y;
+            int _x = position.X - (int)Engine.Camera.Position.X;
+            int _y = position.Y - (int)Engine.Camera.Position.Y;
 
-            Point subtile1 = new Point(_x, _y);
-            Point subtile2 = new Point(_x + Default.SUBTILE_WIDTH, _y);
-            Point subtile3 = new Point(_x, _y + Default.SUBTILE_WIDTH);
-            Point subtile4 = new Point(_x + Default.SUBTILE_WIDTH, _y + Default.SUBTILE_WIDTH);
+            //int _x = position.X;
+            //int _y = position.Y;
+
+            PointF subtile1 = new PointF(_x, _y);
+            PointF subtile2 = new PointF(_x + Default.SUBTILE_WIDTH, _y);
+            PointF subtile3 = new PointF(_x, _y + Default.SUBTILE_WIDTH);
+            PointF subtile4 = new PointF(_x + Default.SUBTILE_WIDTH, _y + Default.SUBTILE_WIDTH);
 
             /*
             switch (texture.TextureType)
@@ -83,18 +63,29 @@ namespace GameEngine2D
             }
             */
 
-            Texture t = Engine.ContentManager.GetTexture(this.GameTexture.SourceTexture);
+            Texture t = Engine.ContentManager.GetTexture(this.texture.SourceTexture);
 
             if (t == null)
             {
-                s.Draw2D(Engine.ContentManager.DefaultTexture, new Rectangle(position.X, position.Y, Default.TILE_WIDTH, Default.TILE_WIDTH), TILE_SIZE, subtile1, Color.White);
+                /*
+                s.Draw2D(Engine.ContentManager.DefaultTexture, texture.Rects[0], new Size(Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH), subtile1, Color.White);
+                s.Draw2D(Engine.ContentManager.DefaultTexture, texture.Rects[1], new Size(Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH), subtile2, Color.White);
+                s.Draw2D(Engine.ContentManager.DefaultTexture, texture.Rects[2], new Size(Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH), subtile3, Color.White);
+                s.Draw2D(Engine.ContentManager.DefaultTexture, texture.Rects[3], new Size(Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH), subtile4, Color.White); 
+                */
+
+                Size size = new Size(Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+                s.Draw2D(Engine.ContentManager.DefaultTexture, texture.Rects[0], size, new PointF(_x, _y), Color.White);
+                s.Draw2D(Engine.ContentManager.DefaultTexture, texture.Rects[1], size, new PointF(_x + Default.SUBTILE_WIDTH, _y), Color.White);
+                s.Draw2D(Engine.ContentManager.DefaultTexture, texture.Rects[2], size, new PointF(_x, _y + Default.SUBTILE_WIDTH), Color.White);
+                s.Draw2D(Engine.ContentManager.DefaultTexture, texture.Rects[3], size, new PointF(_x + Default.SUBTILE_WIDTH, _y + Default.SUBTILE_WIDTH), Color.White);
             }
             else
             {
-                s.Draw2D(t, texture.Rects[0], SUBTILE_SIZE, subtile1, Color.White);
+                /*s.Draw2D(t, texture.Rects[0], SUBTILE_SIZE, subtile1, Color.White);
                 s.Draw2D(t, texture.Rects[1], SUBTILE_SIZE, subtile2, Color.White);
                 s.Draw2D(t, texture.Rects[2], SUBTILE_SIZE, subtile3, Color.White);
-                s.Draw2D(t, texture.Rects[3], SUBTILE_SIZE, subtile4, Color.White);
+                s.Draw2D(t, texture.Rects[3], SUBTILE_SIZE, subtile4, Color.White);*/
             }
         }
     }

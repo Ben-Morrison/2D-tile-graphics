@@ -9,19 +9,18 @@ using System.Windows.Forms;
 
 namespace GameEngine2D
 {
-    public class Tile
+    public class Tile : IPosition, IDraw
     {
-        private bool solid;
         private Point position;
         private TileLayer[] layers;
 
         public Tile(int x, int y)
         {
             this.position = new Point(x * Default.TILE_WIDTH, y * Default.TILE_WIDTH);
+            this.layers = new TileLayer[2];
 
-            layers = new TileLayer[2];
-            layers[0] = new TileLayer();
-            layers[1] = new TileLayer();
+            this.layers[0] = new TileLayer(new GameTexture("defalt", TextureType.None));
+            this.layers[1] = new TileLayer(new GameTexture("defalt", TextureType.None));
         }
 
         public Point Position
@@ -30,33 +29,22 @@ namespace GameEngine2D
             set { this.position = value; }
         }
 
-        public void SetLayer(int layer, GameTexture gameTexture)
+        public TileLayer[] Layers
         {
-            this.layers[layer] = new TileLayer(gameTexture);
+            get { return this.layers; }
         }
 
-        public TileLayer GetLayer(int layer)
+        public void SetLayer(int layer, GameTexture texture)
         {
-            return this.layers[layer];
-        }
-
-        public void DeleteLayer(int layer)
-        {
-            this.layers[layer].Exists = false;
-        }
-
-        public TileLayer[] GetLayers()
-        {
-            return this.layers;
+            this.layers[layer].GameTexture = texture;
         }
 
         public void Draw(Sprite s)
         {
-            foreach(TileLayer layer in layers)
-                if (layer.Exists)
-                {
-                    layer.Draw(s, position);
-                }
+            foreach (TileLayer l in layers)
+            {
+                l.Draw(s, this.position);
+            }
         }
     }
 }

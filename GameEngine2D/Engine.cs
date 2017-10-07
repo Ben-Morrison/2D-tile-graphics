@@ -66,10 +66,16 @@ namespace GameEngine2D
                 if (editor)
                 {
                     // Set up editor to enable creating or loading a game
+                    // Set stateManager.EngineState to GameRunning when a game is created or loaded
                 }
                 else
                 {
-                    // Load the game here then set stateManager.EngineState to Running
+                    // Load the game here
+                    game = new Game();
+
+                    Room room = new Room(100, 100);
+                    game.AddRoom(room);
+                    game.SetCurrentRoom(0);
 
                     StartLoop();
                 }
@@ -83,13 +89,16 @@ namespace GameEngine2D
         public void Uninitialize()
         {
             StopLoop();
+            game = null;
             stateManager.EngineState = EngineState.Stopped;
         }
 
         private void StartLoop()
         {
-            if (stateManager.EngineState == EngineState.Running)
+            if (stateManager.EngineState == EngineState.Initialized)
             {
+                stateManager.EngineState = EngineState.GameRunning;
+
                 thread = new Thread(new ThreadStart(GameLoop));
                 thread.Start();
             }
@@ -97,14 +106,23 @@ namespace GameEngine2D
 
         public void StopLoop()
         {
-            if (stateManager.EngineState == EngineState.Running)
+            if (stateManager.EngineState == EngineState.GameRunning)
             {
+                stateManager.EngineState = EngineState.Initialized;
+
                 while (stateManager.IsDrawing)
                 {
                     Thread.Sleep(1);
                 }
 
-                stateManager.EngineState = EngineState.Initialized;
+                try
+                {
+                    thread.Abort();
+                }
+                catch (Exception e)
+                {
+
+                }
             }
         }
 
@@ -115,7 +133,7 @@ namespace GameEngine2D
 
             watch.Start();
 
-            while (stateManager.EngineState == EngineState.Running)
+            while (stateManager.EngineState == EngineState.GameRunning)
             {
                 startTime = watch.ElapsedMilliseconds;
                 stateManager.Delta = ((startTime - previousTime) / 1000.0f);
@@ -159,25 +177,30 @@ namespace GameEngine2D
 
         public void Draw()
         {
-            stateManager.IsDrawing = true;
+            if (stateManager.EngineState == EngineState.GameRunning)
+            {
+                stateManager.IsDrawing = true;
 
-            deviceManager.Device.Clear(ClearFlags.Target, Color.Black, 0, 0);
-            deviceManager.Device.BeginScene();
+                deviceManager.Device.Clear(ClearFlags.Target, Color.RoyalBlue, 0, 0);
+                deviceManager.Device.BeginScene();
 
-            Sprite s = new Sprite(deviceManager.Device);
-            s.Begin(SpriteFlags.AlphaBlend);
+                Sprite s = new Sprite(deviceManager.Device);
+                s.Begin(SpriteFlags.AlphaBlend);
 
-            // Draw Current Map
-            if (game != null)
-                game.Draw(s);
+                // Draw Current Map
+                if (game != null)
+                    game.Draw(s);
 
-            s.End();
-            s.Dispose();
+                s.End();
+                s.Dispose();
 
-            deviceManager.Device.EndScene();
-            deviceManager.Device.Present();
+                deviceManager.Device.EndScene();
 
-            stateManager.IsDrawing = false;
+                if (stateManager.EngineState == EngineState.GameRunning)
+                    deviceManager.Device.Present();
+
+                stateManager.IsDrawing = false;
+            }
         }
     }
 }

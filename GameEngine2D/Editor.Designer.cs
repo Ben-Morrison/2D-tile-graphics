@@ -126,6 +126,7 @@
             this.menuNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.menuNew.Size = new System.Drawing.Size(146, 22);
             this.menuNew.Text = "&New";
+            this.menuNew.Click += new System.EventHandler(this.menuNew_Click);
             // 
             // menuOpen
             // 

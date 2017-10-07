@@ -15,8 +15,12 @@ namespace GameEngine2D
 
         public static readonly string   CONTENT_DIRECTORY = Application.StartupPath + @"\content";
         public static readonly string   TEXTURE_DIRECTORY = CONTENT_DIRECTORY + @"\textures";
+        public static readonly string   DEFAULT_CONTENT_DIRECTORY = CONTENT_DIRECTORY;
 
         public static readonly int      TILE_WIDTH = 32;
         public static readonly int      SUBTILE_WIDTH = 16;
+
+        public static readonly int      DEFAULT_ROOM_SIZE_X = 2;
+        public static readonly int      DEFAULT_ROOM_SIZE_Y = 2;
     }
 }

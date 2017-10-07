@@ -13,6 +13,8 @@ namespace GameEngine2D
 {
     public partial class Editor : Form
     {
+        #region Brush Classes
+
         public enum BrushType
         {
             Select,
@@ -65,11 +67,13 @@ namespace GameEngine2D
             }
         }
 
-        Engine engine;
+        #endregion
 
-        // Has the current game been saved
+        Engine engine;
         private bool saved = false;
+
         public static EditorBrush Brush;
+        private Point lastClickedPos;
 
         public Editor()
         {
@@ -90,11 +94,11 @@ namespace GameEngine2D
         private void LoadDefaultData()
         {
             //engine.Load();
-
             Game game = new Game();
 
             Room room = new Room(100, 100);
             game.AddRoom(room);
+            game.SetCurrentRoom(0);
 
             Engine.game = game;
         }
@@ -113,51 +117,49 @@ namespace GameEngine2D
 
         private void EditorPanel_MouseDown(object sender, MouseEventArgs e)
         {
-            DoBrush(e);
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+                DoBrush(e);
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                lastClickedPos = new Point(e.X, e.Y);
+            }
         }
 
         private void EditorPanel_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
                 DoBrush(e);
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                Engine.Camera.Move(lastClickedPos.X - e.X, lastClickedPos.Y - e.Y);
+                lastClickedPos = new Point(e.X, e.Y);
+
+                engine.Draw();
+            }
         }
-
-        #region Camera
-
-        private void btnRight_Click(object sender, EventArgs e)
-        {
-            Engine.Camera.Move(10, 0);
-            engine.Draw();
-        }
-
-        private void btnLeft_Click(object sender, EventArgs e)
-        {
-            Engine.Camera.Move(-10, 0);
-            engine.Draw();
-        }
-
-        private void btnUp_Click(object sender, EventArgs e)
-        {
-            Engine.Camera.Move(0, -10);
-            engine.Draw();
-        }
-
-        private void btnDown_Click(object sender, EventArgs e)
-        {
-            Engine.Camera.Move(0, 10);
-            engine.Draw();
-        }
-
-        #endregion
 
         #region Menu
 
-        // File
+        // File Menu
 
+        // File > New
+        private void menuNew_Click(object sender, EventArgs e)
+        {
+            Game game = new Game();
 
+            Room room = new Room(6, 8);
+            game.AddRoom(room);
+            game.SetCurrentRoom(0);
+
+            Engine.game = game;
+            Engine.StateManager.EngineState = EngineState.GameRunning;
+
+            engine.Draw();
+        }
 
         // Content
 
+        // Content > Textures
         private void menuTextures_Click(object sender, EventArgs e)
         {
             TextureForm form = new TextureForm(Brush);
@@ -172,7 +174,7 @@ namespace GameEngine2D
 
         private void DoBrush(MouseEventArgs e)
         {
-            if (Engine.StateManager.EngineState == EngineState.Running)
+            if (Engine.StateManager.EngineState == EngineState.GameRunning)
             {
                 switch (Brush.BrushType)
                 {
@@ -207,14 +209,14 @@ namespace GameEngine2D
             {
                 Room room = Engine.game.GetCurrentRoom();
 
-                for (int i = 0; i < room.GetTiles().GetLength(0); i++)
+                for (int i = 0; i < room.Tiles.GetLength(0); i++)
                 {
-                    for (int y = 0; y < room.GetTiles().GetLength(1); y++)
+                    for (int y = 0; y < room.Tiles.GetLength(1); y++)
                     {
-                        Tile tile = room.GetTiles()[i, y];
-                        if (e.X + Engine.Camera.X >= tile.Position.X && e.X + Engine.Camera.X < tile.Position.X + Default.TILE_WIDTH)
+                        Tile tile = room.Tiles[i, y];
+                        if (e.X + Engine.Camera.Position.X >= tile.Position.X && e.X + Engine.Camera.Position.X < tile.Position.X + Default.TILE_WIDTH)
                         {
-                            if (e.Y + Engine.Camera.Y >= tile.Position.Y && e.Y + Engine.Camera.Y < tile.Position.Y + Default.TILE_WIDTH)
+                            if (e.Y + Engine.Camera.Position.Y >= tile.Position.Y && e.Y + Engine.Camera.Position.Y < tile.Position.Y + Default.TILE_WIDTH)
                             {
                                 if (Brush.BrushType == BrushType.Texture)
                                 {
@@ -264,83 +266,83 @@ namespace GameEngine2D
             if (checkonly)
             {
                 if (i != 0)
-                    if (Engine.game.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(Brush.Layer).GameTexture.TextureType == TextureType.AutoTile)
+                    if (Engine.game.GetCurrentRoom().Tiles[i - 1, y].Layers[Brush.Layer].GameTexture.TextureType == TextureType.AutoTile)
                             left = true;
 
                 // Get tile to the right
-                if (i != Engine.game.GetCurrentRoom().GetTiles().GetLength(0) - 1)
-                    if (Engine.game.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(Brush.Layer).GameTexture.TextureType == TextureType.AutoTile)
+                if (i != Engine.game.GetCurrentRoom().Tiles.GetLength(0) - 1)
+                    if (Engine.game.GetCurrentRoom().Tiles[i + 1, y].Layers[Brush.Layer].GameTexture.TextureType == TextureType.AutoTile)
                             right = true;
 
                 // Get tile above
                 if (y != 0)
-                    if (Engine.game.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(Brush.Layer).GameTexture.TextureType == TextureType.AutoTile)
+                    if (Engine.game.GetCurrentRoom().Tiles[i, y - 1].Layers[Brush.Layer].GameTexture.TextureType == TextureType.AutoTile)
                             up = true;
 
                 // Get tile below
-                if (y != Engine.game.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (Engine.game.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(Brush.Layer).GameTexture.TextureType == TextureType.AutoTile)
+                if (y != Engine.game.GetCurrentRoom().Tiles.GetLength(1) - 1)
+                    if (Engine.game.GetCurrentRoom().Tiles[i, y + 1].Layers[Brush.Layer].GameTexture.TextureType == TextureType.AutoTile)
                             down = true;
 
                 if (i != 0 && y != 0)
-                    if (Engine.game.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(Brush.Layer).GameTexture.TextureType == TextureType.AutoTile)
+                    if (Engine.game.GetCurrentRoom().Tiles[i - 1, y - 1].Layers[Brush.Layer].GameTexture.TextureType == TextureType.AutoTile)
                             leftup = true;
 
-                if (i != Engine.game.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != 0)
-                    if (Engine.game.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(Brush.Layer).GameTexture.TextureType == TextureType.AutoTile)
+                if (i != Engine.game.GetCurrentRoom().Tiles.GetLength(0) - 1 && y != 0)
+                    if (Engine.game.GetCurrentRoom().Tiles[i + 1, y - 1].Layers[Brush.Layer].GameTexture.TextureType == TextureType.AutoTile)
                             rightup = true;
 
-                if (i != 0 && y != Engine.game.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (Engine.game.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(Brush.Layer).GameTexture.TextureType == TextureType.AutoTile)
+                if (i != 0 && y != Engine.game.GetCurrentRoom().Tiles.GetLength(1) - 1)
+                    if (Engine.game.GetCurrentRoom().Tiles[i - 1, y + 1].Layers[Brush.Layer].GameTexture.TextureType == TextureType.AutoTile)
                             leftdown = true;
 
-                if (i != Engine.game.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != Engine.game.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (Engine.game.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(Brush.Layer).GameTexture.TextureType == TextureType.AutoTile)
+                if (i != Engine.game.GetCurrentRoom().Tiles.GetLength(0) - 1 && y != Engine.game.GetCurrentRoom().Tiles.GetLength(1) - 1)
+                    if (Engine.game.GetCurrentRoom().Tiles[i + 1, y + 1].Layers[Brush.Layer].GameTexture.TextureType == TextureType.AutoTile)
                             rightdown = true;
             }
             else
             {
                 if (i != 0)
-                    if (Engine.game.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(Brush.Layer).GameTexture.TextureType == TextureType.AutoTile)
-                        if (Engine.game.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(Brush.Layer).GameTexture.Equals(checkTexture))
+                    if (Engine.game.GetCurrentRoom().Tiles[i - 1, y].Layers[Brush.Layer].GameTexture.TextureType == TextureType.AutoTile)
+                        if (Engine.game.GetCurrentRoom().Tiles[i - 1, y].Layers[Brush.Layer].GameTexture.Equals(checkTexture))
                             left = true;
 
                 // Get tile to the right
-                if (i != Engine.game.GetCurrentRoom().GetTiles().GetLength(0) - 1)
-                    if (Engine.game.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(Brush.Layer).GameTexture.TextureType == TextureType.AutoTile)
-                        if (Engine.game.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(Brush.Layer).GameTexture.Equals(checkTexture))
+                if (i != Engine.game.GetCurrentRoom().Tiles.GetLength(0) - 1)
+                    if (Engine.game.GetCurrentRoom().Tiles[i + 1, y].Layers[Brush.Layer].GameTexture.TextureType == TextureType.AutoTile)
+                        if (Engine.game.GetCurrentRoom().Tiles[i + 1, y].Layers[Brush.Layer].GameTexture.Equals(checkTexture))
                             right = true;
 
                 // Get tile above
                 if (y != 0)
-                    if (Engine.game.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(Brush.Layer).GameTexture.TextureType == TextureType.AutoTile)
-                        if (Engine.game.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(Brush.Layer).GameTexture.Equals(checkTexture))
+                    if (Engine.game.GetCurrentRoom().Tiles[i, y - 1].Layers[Brush.Layer].GameTexture.TextureType == TextureType.AutoTile)
+                        if (Engine.game.GetCurrentRoom().Tiles[i, y - 1].Layers[Brush.Layer].GameTexture.Equals(checkTexture))
                                     up = true;
 
                 // Get tile below
-                if (y != Engine.game.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (Engine.game.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(Brush.Layer).GameTexture.TextureType == TextureType.AutoTile)
-                        if (Engine.game.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(Brush.Layer).GameTexture.Equals(checkTexture))
+                if (y != Engine.game.GetCurrentRoom().Tiles.GetLength(1) - 1)
+                    if (Engine.game.GetCurrentRoom().Tiles[i, y + 1].Layers[Brush.Layer].GameTexture.TextureType == TextureType.AutoTile)
+                        if (Engine.game.GetCurrentRoom().Tiles[i, y + 1].Layers[Brush.Layer].GameTexture.Equals(checkTexture))
                                     down = true;
 
                 if (i != 0 && y != 0)
-                    if (Engine.game.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(Brush.Layer).GameTexture.TextureType == TextureType.AutoTile)
-                        if (Engine.game.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(Brush.Layer).GameTexture.Equals(checkTexture))
+                    if (Engine.game.GetCurrentRoom().Tiles[i - 1, y - 1].Layers[Brush.Layer].GameTexture.TextureType == TextureType.AutoTile)
+                        if (Engine.game.GetCurrentRoom().Tiles[i - 1, y - 1].Layers[Brush.Layer].GameTexture.Equals(checkTexture))
                                     leftup = true;
 
-                if (i != Engine.game.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != 0)
-                    if (Engine.game.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(Brush.Layer).GameTexture.TextureType == TextureType.AutoTile)
-                        if (Engine.game.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(Brush.Layer).GameTexture.Equals(checkTexture))
+                if (i != Engine.game.GetCurrentRoom().Tiles.GetLength(0) - 1 && y != 0)
+                    if (Engine.game.GetCurrentRoom().Tiles[i + 1, y - 1].Layers[Brush.Layer].GameTexture.TextureType == TextureType.AutoTile)
+                        if (Engine.game.GetCurrentRoom().Tiles[i + 1, y - 1].Layers[Brush.Layer].GameTexture.Equals(checkTexture))
                                     rightup = true;
 
-                if (i != 0 && y != Engine.game.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (Engine.game.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(Brush.Layer).GameTexture.TextureType == TextureType.AutoTile)
-                        if (Engine.game.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(Brush.Layer).GameTexture.Equals(checkTexture))
+                if (i != 0 && y != Engine.game.GetCurrentRoom().Tiles.GetLength(1) - 1)
+                    if (Engine.game.GetCurrentRoom().Tiles[i - 1, y + 1].Layers[Brush.Layer].GameTexture.TextureType == TextureType.AutoTile)
+                        if (Engine.game.GetCurrentRoom().Tiles[i - 1, y + 1].Layers[Brush.Layer].GameTexture.Equals(checkTexture))
                                     leftdown = true;
 
-                if (i != Engine.game.GetCurrentRoom().GetTiles().GetLength(0) - 1 && y != Engine.game.GetCurrentRoom().GetTiles().GetLength(1) - 1)
-                    if (Engine.game.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(Brush.Layer).GameTexture.TextureType == TextureType.AutoTile)
-                        if (Engine.game.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(Brush.Layer).GameTexture.Equals(checkTexture))
+                if (i != Engine.game.GetCurrentRoom().Tiles.GetLength(0) - 1 && y != Engine.game.GetCurrentRoom().Tiles.GetLength(1) - 1)
+                    if (Engine.game.GetCurrentRoom().Tiles[i + 1, y + 1].Layers[Brush.Layer].GameTexture.TextureType == TextureType.AutoTile)
+                        if (Engine.game.GetCurrentRoom().Tiles[i + 1, y + 1].Layers[Brush.Layer].GameTexture.Equals(checkTexture))
                             rightdown = true;
 
                 Rectangle[] rects = new Rectangle[4];
@@ -423,27 +425,27 @@ namespace GameEngine2D
                 }
 
                 GameTexture texture = new GameTexture("default", TextureType.AutoTile, Brush.Texture.StartX, Brush.Texture.StartY, Default.TILE_WIDTH, Default.TILE_WIDTH, rects);
-                Engine.game.GetCurrentRoom().GetTiles()[i, y].SetLayer(Brush.Layer, texture);
+                Engine.game.GetCurrentRoom().Tiles[i, y].SetLayer(Brush.Layer, texture);
             }
 
             if (repeat)
             {
                 if (left)
-                    DoAutoTile(Engine.game.GetCurrentRoom().GetTiles()[i - 1, y].GetLayer(Brush.Layer).GameTexture, i - 1, y, false, false);
+                    DoAutoTile(Engine.game.GetCurrentRoom().Tiles[i - 1, y].Layers[Brush.Layer].GameTexture, i - 1, y, false, false);
                 if (right)
-                    DoAutoTile(Engine.game.GetCurrentRoom().GetTiles()[i + 1, y].GetLayer(Brush.Layer).GameTexture, i + 1, y, false, false);
+                    DoAutoTile(Engine.game.GetCurrentRoom().Tiles[i + 1, y].Layers[Brush.Layer].GameTexture, i + 1, y, false, false);
                 if (up)
-                    DoAutoTile(Engine.game.GetCurrentRoom().GetTiles()[i, y - 1].GetLayer(Brush.Layer).GameTexture, i, y - 1, false, false);
+                    DoAutoTile(Engine.game.GetCurrentRoom().Tiles[i, y - 1].Layers[Brush.Layer].GameTexture, i, y - 1, false, false);
                 if (down)
-                    DoAutoTile(Engine.game.GetCurrentRoom().GetTiles()[i, y + 1].GetLayer(Brush.Layer).GameTexture, i, y + 1, false, false);
+                    DoAutoTile(Engine.game.GetCurrentRoom().Tiles[i, y + 1].Layers[Brush.Layer].GameTexture, i, y + 1, false, false);
                 if (leftup)
-                    DoAutoTile(Engine.game.GetCurrentRoom().GetTiles()[i - 1, y - 1].GetLayer(Brush.Layer).GameTexture, i - 1, y - 1, false, false);
+                    DoAutoTile(Engine.game.GetCurrentRoom().Tiles[i - 1, y - 1].Layers[Brush.Layer].GameTexture, i - 1, y - 1, false, false);
                 if (rightup)
-                    DoAutoTile(Engine.game.GetCurrentRoom().GetTiles()[i + 1, y - 1].GetLayer(Brush.Layer).GameTexture, i + 1, y - 1, false, false);
+                    DoAutoTile(Engine.game.GetCurrentRoom().Tiles[i + 1, y - 1].Layers[Brush.Layer].GameTexture, i + 1, y - 1, false, false);
                 if (leftdown)
-                    DoAutoTile(Engine.game.GetCurrentRoom().GetTiles()[i - 1, y + 1].GetLayer(Brush.Layer).GameTexture, i - 1, y + 1, false, false);
+                    DoAutoTile(Engine.game.GetCurrentRoom().Tiles[i - 1, y + 1].Layers[Brush.Layer].GameTexture, i - 1, y + 1, false, false);
                 if (rightdown)
-                    DoAutoTile(Engine.game.GetCurrentRoom().GetTiles()[i + 1, y + 1].GetLayer(Brush.Layer).GameTexture, i + 1, y + 1, false, false);
+                    DoAutoTile(Engine.game.GetCurrentRoom().Tiles[i + 1, y + 1].Layers[Brush.Layer].GameTexture, i + 1, y + 1, false, false);
             }
         }
 

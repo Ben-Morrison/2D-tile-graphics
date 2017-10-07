@@ -61,18 +61,8 @@ namespace GameEngine2D
                 System.Drawing.Font systemFont = new System.Drawing.Font("Arial", 12f, System.Drawing.FontStyle.Regular);
                 defaultFont = new Microsoft.DirectX.Direct3D.Font(device, systemFont);
 
-                // Creating default blue texture
-                Bitmap bitmap = new Bitmap(32, 32);
-
-                for (int i = 0; i < 32; i++)
-                {
-                    for (int y = 0; y < 32; y++)
-                    {
-                        bitmap.SetPixel(i, y, Color.Blue);
-                    }
-                }
-
-                this.defaultTexture = new Texture(device, bitmap, Usage.None, Pool.Managed);
+                ImageInformation info = TextureLoader.ImageInformationFromFile(Default.DEFAULT_CONTENT_DIRECTORY + @"\default.png");
+                this.defaultTexture = TextureLoader.FromFile(device, Default.DEFAULT_CONTENT_DIRECTORY + @"\default.png", info.Width, info.Height, 1, Usage.None, Format.A8R8G8B8, Pool.Managed, Filter.None, Filter.None, 0);
             }
         }
 
