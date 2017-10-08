@@ -20,7 +20,7 @@ namespace GameEngine2D
         public static readonly int      TILE_WIDTH = 32;
         public static readonly int      SUBTILE_WIDTH = 16;
 
-        public static readonly int      DEFAULT_ROOM_SIZE_X = 2;
-        public static readonly int      DEFAULT_ROOM_SIZE_Y = 2;
+        public static readonly int      DEFAULT_ROOM_SIZE_X = 20;
+        public static readonly int      DEFAULT_ROOM_SIZE_Y = 16;
     }
 }

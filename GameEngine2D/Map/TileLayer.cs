@@ -38,8 +38,8 @@ namespace GameEngine2D
 
             if (texture.TextureType != TextureType.None)
             {
-                Texture t = Engine.ContentManager.GetTexture(this.texture.SourceTexture);
-                
+                Texture t;
+                Engine.ContentManager.Textures.TryGetValue(texture.SourceTexture, out t);
 
                 if (t == null)
                 {

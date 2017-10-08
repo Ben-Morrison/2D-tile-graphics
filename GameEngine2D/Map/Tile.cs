@@ -36,7 +36,8 @@ namespace GameEngine2D
 
         public void SetLayer(int layer, GameTexture texture)
         {
-            this.layers[layer].GameTexture = texture;
+            GameTexture t = (GameTexture)texture.Clone();
+            this.layers[layer].GameTexture = t;
         }
 
         public void Draw(Sprite s)

@@ -21,7 +21,7 @@ namespace GameEngine2D
         Waterfall
     }
 
-    public class GameTexture
+    public class GameTexture : ICloneable
     {
         private string sourceTexture;
 
@@ -42,6 +42,7 @@ namespace GameEngine2D
         {
             this.sourceTexture = sourceTexture;
             this.textureType = textureType;
+            this.animationType = AnimationType.None;
 
             this.startX = 0;
             this.startY = 0;
@@ -126,6 +127,29 @@ namespace GameEngine2D
         {
             get { return this.rects; }
             set { this.rects = value; }
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
+        public bool CompareTextures(GameTexture t)
+        {
+            bool result = true;
+
+            if (this.TextureType != t.TextureType)
+                result = false;
+
+            // Coparing the source texture
+            if (!this.SourceTexture.Equals(t.SourceTexture))
+                result = false;
+
+            // Comparing the sub texture
+            if (this.StartX != t.StartX || this.StartY != t.StartY)
+                result = false;
+
+            return result;
         }
     }
 }

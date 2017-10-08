@@ -66,21 +66,6 @@ namespace GameEngine2D
             }
         }
 
-        public Game LoadGame(string path)
-        {
-            // Get textures from the file
-            // Get other content from the file
-
-            // Get the rooms, tiles, objects and everything else
-
-            return new Game();
-        }
-
-        public void UnloadGame()
-        {
-
-        }
-
         public void LoadTexture(Device device)
         {
             OpenFileDialog dialog = new OpenFileDialog();

@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using Microsoft.DirectX.Direct3D;
 using System.Windows.Forms;
+using System.IO;
 
 namespace GameEngine2D
 {
+    [Serializable]
     public class Game : IDraw
     {
         private List<Room> rooms;

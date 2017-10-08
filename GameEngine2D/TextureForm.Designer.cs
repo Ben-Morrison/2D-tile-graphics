@@ -28,12 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.radioBrush3 = new System.Windows.Forms.RadioButton();
-            this.radioBrush2 = new System.Windows.Forms.RadioButton();
-            this.radioBrush1 = new System.Windows.Forms.RadioButton();
+            this.radioTextureWall = new System.Windows.Forms.RadioButton();
+            this.radioTextureAutotile = new System.Windows.Forms.RadioButton();
+            this.radioTextureBase = new System.Windows.Forms.RadioButton();
             this.btnSelect = new System.Windows.Forms.Button();
-            this.panelPreview = new System.Windows.Forms.Panel();
-            this.picPreview = new System.Windows.Forms.PictureBox();
             this.btnExit = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -42,46 +40,55 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.picTexture = new System.Windows.Forms.PictureBox();
             this.btnAdd = new System.Windows.Forms.Button();
-            this.panelPreview.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
+            this.picPreview = new System.Windows.Forms.PictureBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.radioAnimNone = new System.Windows.Forms.RadioButton();
+            this.radioAnimAutotile = new System.Windows.Forms.RadioButton();
+            this.radioAnimWaterfall = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picTexture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
+            this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // radioBrush3
+            // radioTextureWall
             // 
-            this.radioBrush3.AutoSize = true;
-            this.radioBrush3.Location = new System.Drawing.Point(917, 78);
-            this.radioBrush3.Name = "radioBrush3";
-            this.radioBrush3.Size = new System.Drawing.Size(46, 17);
-            this.radioBrush3.TabIndex = 17;
-            this.radioBrush3.TabStop = true;
-            this.radioBrush3.Text = "Wall";
-            this.radioBrush3.UseVisualStyleBackColor = true;
+            this.radioTextureWall.AutoSize = true;
+            this.radioTextureWall.Location = new System.Drawing.Point(3, 62);
+            this.radioTextureWall.Name = "radioTextureWall";
+            this.radioTextureWall.Size = new System.Drawing.Size(46, 17);
+            this.radioTextureWall.TabIndex = 17;
+            this.radioTextureWall.TabStop = true;
+            this.radioTextureWall.Text = "Wall";
+            this.radioTextureWall.UseVisualStyleBackColor = true;
+            this.radioTextureWall.CheckedChanged += new System.EventHandler(this.radioTextureWall_CheckedChanged);
             // 
-            // radioBrush2
+            // radioTextureAutotile
             // 
-            this.radioBrush2.AutoSize = true;
-            this.radioBrush2.Location = new System.Drawing.Point(917, 55);
-            this.radioBrush2.Name = "radioBrush2";
-            this.radioBrush2.Size = new System.Drawing.Size(64, 17);
-            this.radioBrush2.TabIndex = 14;
-            this.radioBrush2.TabStop = true;
-            this.radioBrush2.Text = "AutoTile";
-            this.radioBrush2.UseVisualStyleBackColor = true;
-            this.radioBrush2.CheckedChanged += new System.EventHandler(this.radioBrush2_CheckedChanged);
+            this.radioTextureAutotile.AutoSize = true;
+            this.radioTextureAutotile.Location = new System.Drawing.Point(3, 39);
+            this.radioTextureAutotile.Name = "radioTextureAutotile";
+            this.radioTextureAutotile.Size = new System.Drawing.Size(64, 17);
+            this.radioTextureAutotile.TabIndex = 14;
+            this.radioTextureAutotile.TabStop = true;
+            this.radioTextureAutotile.Text = "AutoTile";
+            this.radioTextureAutotile.UseVisualStyleBackColor = true;
+            this.radioTextureAutotile.CheckedChanged += new System.EventHandler(this.radioTextureAutotile_CheckedChanged);
             // 
-            // radioBrush1
+            // radioTextureBase
             // 
-            this.radioBrush1.AutoSize = true;
-            this.radioBrush1.Location = new System.Drawing.Point(917, 32);
-            this.radioBrush1.Name = "radioBrush1";
-            this.radioBrush1.Size = new System.Drawing.Size(88, 17);
-            this.radioBrush1.TabIndex = 13;
-            this.radioBrush1.TabStop = true;
-            this.radioBrush1.Text = "Base Texture";
-            this.radioBrush1.UseVisualStyleBackColor = true;
-            this.radioBrush1.CheckedChanged += new System.EventHandler(this.radioBrush1_CheckedChanged);
+            this.radioTextureBase.AutoSize = true;
+            this.radioTextureBase.Location = new System.Drawing.Point(3, 16);
+            this.radioTextureBase.Name = "radioTextureBase";
+            this.radioTextureBase.Size = new System.Drawing.Size(88, 17);
+            this.radioTextureBase.TabIndex = 13;
+            this.radioTextureBase.TabStop = true;
+            this.radioTextureBase.Text = "Base Texture";
+            this.radioTextureBase.UseVisualStyleBackColor = true;
+            this.radioTextureBase.CheckedChanged += new System.EventHandler(this.radioTextureBase_CheckedChanged);
             // 
             // btnSelect
             // 
@@ -92,23 +99,6 @@
             this.btnSelect.Text = "Select";
             this.btnSelect.UseVisualStyleBackColor = true;
             this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
-            // 
-            // panelPreview
-            // 
-            this.panelPreview.AutoScroll = true;
-            this.panelPreview.Controls.Add(this.picPreview);
-            this.panelPreview.Location = new System.Drawing.Point(917, 175);
-            this.panelPreview.Name = "panelPreview";
-            this.panelPreview.Size = new System.Drawing.Size(270, 308);
-            this.panelPreview.TabIndex = 19;
-            // 
-            // picPreview
-            // 
-            this.picPreview.Location = new System.Drawing.Point(0, 0);
-            this.picPreview.Name = "picPreview";
-            this.picPreview.Size = new System.Drawing.Size(270, 308);
-            this.picPreview.TabIndex = 0;
-            this.picPreview.TabStop = false;
             // 
             // btnExit
             // 
@@ -123,7 +113,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(918, 12);
+            this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(70, 13);
             this.label1.TabIndex = 21;
@@ -132,7 +122,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(917, 152);
+            this.label2.Location = new System.Drawing.Point(918, 281);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 22;
@@ -143,7 +133,7 @@
             this.listTextures.FormattingEnabled = true;
             this.listTextures.Location = new System.Drawing.Point(1068, 36);
             this.listTextures.Name = "listTextures";
-            this.listTextures.Size = new System.Drawing.Size(120, 134);
+            this.listTextures.Size = new System.Drawing.Size(120, 251);
             this.listTextures.TabIndex = 23;
             this.listTextures.SelectedIndexChanged += new System.EventHandler(this.listTextures_SelectedIndexChanged);
             // 
@@ -172,6 +162,7 @@
             this.picTexture.Size = new System.Drawing.Size(900, 500);
             this.picTexture.TabIndex = 26;
             this.picTexture.TabStop = false;
+            this.picTexture.Click += new System.EventHandler(this.picTexture_Click);
             // 
             // btnAdd
             // 
@@ -183,29 +174,103 @@
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
+            // picPreview
+            // 
+            this.picPreview.Location = new System.Drawing.Point(918, 297);
+            this.picPreview.Name = "picPreview";
+            this.picPreview.Size = new System.Drawing.Size(270, 186);
+            this.picPreview.TabIndex = 0;
+            this.picPreview.TabStop = false;
+            this.picPreview.Paint += new System.Windows.Forms.PaintEventHandler(this.picPreview_Paint);
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.label1);
+            this.panel2.Controls.Add(this.radioTextureBase);
+            this.panel2.Controls.Add(this.radioTextureAutotile);
+            this.panel2.Controls.Add(this.radioTextureWall);
+            this.panel2.Location = new System.Drawing.Point(918, 12);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(141, 100);
+            this.panel2.TabIndex = 28;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.label4);
+            this.panel3.Controls.Add(this.radioAnimNone);
+            this.panel3.Controls.Add(this.radioAnimAutotile);
+            this.panel3.Controls.Add(this.radioAnimWaterfall);
+            this.panel3.Location = new System.Drawing.Point(918, 118);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(141, 100);
+            this.panel3.TabIndex = 29;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(80, 13);
+            this.label4.TabIndex = 21;
+            this.label4.Text = "Animation Type";
+            // 
+            // radioAnimNone
+            // 
+            this.radioAnimNone.AutoSize = true;
+            this.radioAnimNone.Location = new System.Drawing.Point(3, 16);
+            this.radioAnimNone.Name = "radioAnimNone";
+            this.radioAnimNone.Size = new System.Drawing.Size(51, 17);
+            this.radioAnimNone.TabIndex = 13;
+            this.radioAnimNone.TabStop = true;
+            this.radioAnimNone.Text = "None";
+            this.radioAnimNone.UseVisualStyleBackColor = true;
+            // 
+            // radioAnimAutotile
+            // 
+            this.radioAnimAutotile.AutoSize = true;
+            this.radioAnimAutotile.Location = new System.Drawing.Point(3, 39);
+            this.radioAnimAutotile.Name = "radioAnimAutotile";
+            this.radioAnimAutotile.Size = new System.Drawing.Size(64, 17);
+            this.radioAnimAutotile.TabIndex = 14;
+            this.radioAnimAutotile.TabStop = true;
+            this.radioAnimAutotile.Text = "AutoTile";
+            this.radioAnimAutotile.UseVisualStyleBackColor = true;
+            // 
+            // radioAnimWaterfall
+            // 
+            this.radioAnimWaterfall.AutoSize = true;
+            this.radioAnimWaterfall.Location = new System.Drawing.Point(3, 62);
+            this.radioAnimWaterfall.Name = "radioAnimWaterfall";
+            this.radioAnimWaterfall.Size = new System.Drawing.Size(67, 17);
+            this.radioAnimWaterfall.TabIndex = 17;
+            this.radioAnimWaterfall.TabStop = true;
+            this.radioAnimWaterfall.Text = "Waterfall";
+            this.radioAnimWaterfall.UseVisualStyleBackColor = true;
+            // 
             // TextureForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1199, 524);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.picPreview);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.listTextures);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnSelect);
-            this.Controls.Add(this.panelPreview);
-            this.Controls.Add(this.radioBrush3);
-            this.Controls.Add(this.radioBrush2);
-            this.Controls.Add(this.radioBrush1);
             this.Name = "TextureForm";
             this.Text = "Select Texture";
-            this.panelPreview.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.picPreview)).EndInit();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picTexture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picPreview)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -213,11 +278,10 @@
 
         #endregion
 
-        private System.Windows.Forms.RadioButton radioBrush3;
-        private System.Windows.Forms.RadioButton radioBrush2;
-        private System.Windows.Forms.RadioButton radioBrush1;
+        private System.Windows.Forms.RadioButton radioTextureWall;
+        private System.Windows.Forms.RadioButton radioTextureAutotile;
+        private System.Windows.Forms.RadioButton radioTextureBase;
         private System.Windows.Forms.Button btnSelect;
-        private System.Windows.Forms.Panel panelPreview;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
@@ -225,7 +289,13 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox picTexture;
-        private System.Windows.Forms.PictureBox picPreview;
         private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.PictureBox picPreview;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.RadioButton radioAnimNone;
+        private System.Windows.Forms.RadioButton radioAnimAutotile;
+        private System.Windows.Forms.RadioButton radioAnimWaterfall;
     }
 }
