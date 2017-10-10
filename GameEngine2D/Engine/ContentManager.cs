@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using System.Windows.Forms;
 using System.IO;
@@ -41,10 +42,20 @@ namespace GameEngine2D
             get { return textures; }
         }
 
+        public void ClearContent()
+        {
+            textures = new Dictionary<string,Texture>();
+        }
+
+        public void AddTexture(string key, Texture texture)
+        {
+            textures.Add(key, texture);
+        }
+
         public Texture GetTexture(string key)
         {
             Texture t;
-            bool found = Engine.ContentManager.Textures.TryGetValue(key, out t);
+            bool found = textures.TryGetValue(key, out t);
 
             if (found)
                 return t;
@@ -66,7 +77,7 @@ namespace GameEngine2D
             }
         }
 
-        public void LoadTexture(Device device)
+        public string LoadTexture(Device device)
         {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter = "PNG Image (*.png)|*.png";
@@ -85,22 +96,37 @@ namespace GameEngine2D
                     if(textures.ContainsKey(fileName))
                     {
                         MessageBox.Show("Texture already added", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return String.Empty;
                     }
                     else
                     {
                         textures.Add(fileName, texture);
+                        return fileName;
                     }
                 }
                 catch(Exception e)
                 {
                     error = e.Message;
+                    return String.Empty;
                 }
-            } 
+            }
+
+            return String.Empty;
         }
 
         public void RemoveTexture(string name)
         {
             // Check all tiles and objects that may be using this texture
+        }
+
+        public static Bitmap TextureToBitmap(Texture t)
+        {
+            GraphicsStream stream;
+            stream = TextureLoader.SaveToStream(ImageFileFormat.Bmp, t);
+            Image img = Image.FromStream(stream);
+            Bitmap b = new Bitmap(img);
+
+            return b;
         }
 
         public string GetError()

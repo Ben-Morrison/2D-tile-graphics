@@ -54,6 +54,9 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Data\ISave.cs" />
+    <Compile Include="Data\SaveClass.cs" />
+    <Compile Include="Data\SaveText.cs" />
     <Compile Include="Editor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +95,12 @@
     </Compile>
     <Compile Include="Map\Game.cs" />
     <Compile Include="Map\Room.cs" />
+    <Compile Include="NewRoom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewRoom.Designer.cs">
+      <DependentUpon>NewRoom.cs</DependentUpon>
+    </Compile>
     <Compile Include="Objects\GameObject.cs" />
     <Compile Include="Objects\MovableObject.cs" />
     <Compile Include="Objects\Player.cs" />
@@ -100,6 +109,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Map\Tile.cs" />
     <Compile Include="Map\TileLayer.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="TextureForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,6 +174,13 @@
     <EmbeddedResource Include="Launcher.resx">
       <DependentUpon>Launcher.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="NewRoom.resx">
+      <DependentUpon>NewRoom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="TextureForm.resx">
       <DependentUpon>TextureForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -186,9 +207,23 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\move.png" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\texture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\object.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\erase.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\select.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

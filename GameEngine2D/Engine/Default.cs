@@ -22,5 +22,8 @@ namespace GameEngine2D
 
         public static readonly int      DEFAULT_ROOM_SIZE_X = 20;
         public static readonly int      DEFAULT_ROOM_SIZE_Y = 16;
+
+        public static readonly int      ROOM_MAX_SIZE_X = 200;
+        public static readonly int      ROOM_MAX_SIZE_Y = 200;
     }
 }

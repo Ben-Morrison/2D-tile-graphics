@@ -8,7 +8,6 @@ using System.IO;
 
 namespace GameEngine2D
 {
-    [Serializable]
     public class Game : IDraw
     {
         private List<Room> rooms;
@@ -34,6 +33,12 @@ namespace GameEngine2D
             }
 
             this.rooms.Add(r);
+        }
+
+        public void DeleteRoom(Room r)
+        {
+            this.rooms.RemoveAt(rooms.IndexOf(r));
+            this.currentRoom = 0;
         }
 
         public void SetCurrentRoom(int room)

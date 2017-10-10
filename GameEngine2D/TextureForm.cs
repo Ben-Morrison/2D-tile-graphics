@@ -32,21 +32,43 @@ namespace GameEngine2D
 
             UpdateTextures();
 
+            if(Engine.ContentManager.Textures.Count > 0)
+            {
+                if (this.selectedTexture.Equals(String.Empty))
+                {
+                    listTextures.SelectedIndex = 0;
+                } 
+                else
+                {
+                    int index = Engine.ContentManager.Textures.Keys.ToList<string>().IndexOf(selectedTexture);
+
+                    if (index == -1)
+                        listTextures.SelectedIndex = 0;
+                    else
+                        listTextures.SelectedIndex = index;
+                }
+            }
+            
+            radioTextureBase.Checked = true;
+
             if (brush.BrushType == BrushType.Texture)
             {
                 switch (brush.Texture.TextureType)
                 {
                     case TextureType.None:
-                        radioTextureBase.Select();
+                        radioTextureBase.Checked = true;
                         break;
                     case TextureType.Base:
-                        radioTextureBase.Select();
+                        radioTextureBase.Checked = true;
                         break;
                     case TextureType.AutoTile:
-                        radioTextureAutotile.Select();
+                        radioTextureAutotile.Checked = true;
                         break;
                     case TextureType.Wall:
-                        radioTextureWall.Select();
+                        radioTextureWall.Checked = true;
+                        break;
+                    default:
+                        radioTextureBase.Checked = true;
                         break;
                 }
 
@@ -73,12 +95,12 @@ namespace GameEngine2D
                 }
                 else
                 {
-                    MessageBox.Show("You must first select a texture 2");
+                    MessageBox.Show("You must first select a texture");
                 }
             }
             else
             {
-                MessageBox.Show("You must first select a texture 1");
+                MessageBox.Show("You must first select a texture");
             }
         }
 
@@ -131,9 +153,6 @@ namespace GameEngine2D
             foreach (KeyValuePair<string, Texture> t in Engine.ContentManager.Textures)
             {
                 listTextures.Items.Add(t.Key);
-
-                if (t.Key.Equals(brush.Texture.SourceTexture))
-                    listTextures.SelectedIndex = listTextures.Items.IndexOf(t.Key);
             }
         }
 
@@ -192,8 +211,13 @@ namespace GameEngine2D
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            Engine.ContentManager.LoadTexture(Engine.DeviceManager.Device);
-            UpdateTextures();
+            string key = Engine.ContentManager.LoadTexture(Engine.DeviceManager.Device);
+            if (!key.Equals(String.Empty))
+            {
+                UpdateTextures();
+                listTextures.SelectedIndex = Engine.ContentManager.Textures.Count - 1;
+            }
+            
         }
 
         private void picPreview_Paint(object sender, PaintEventArgs e)
@@ -203,10 +227,7 @@ namespace GameEngine2D
 
             if (t != null)
             {
-                GraphicsStream stream;
-                stream = TextureLoader.SaveToStream(ImageFileFormat.Bmp, t);
-                Image img = Image.FromStream(stream);
-                Bitmap b = new Bitmap(img);
+                Bitmap b = ContentManager.TextureToBitmap(t);
 
                 g = e.Graphics;
                 g.DrawImage(b, new Rectangle(0, 0, brush.Texture.SizeX, brush.Texture.SizeY), new Rectangle(brush.Texture.StartX, brush.Texture.StartY, brush.Texture.SizeX, brush.Texture.SizeY), GraphicsUnit.Pixel);

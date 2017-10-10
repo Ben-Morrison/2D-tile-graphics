@@ -28,14 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Editor));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Objects");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Connected Rooms");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Events");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Triggers");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Variables");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Rooms");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Rooms");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Variables");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Objects");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Connected Rooms");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Events");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Triggers");
             System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Variables");
+            this.contextMenuRooms = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.contextMenuRoomsAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.EditorPanel = new System.Windows.Forms.Panel();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.menuFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,9 +60,11 @@
             this.menuPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.menuSelectAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuRooms = new System.Windows.Forms.ToolStripMenuItem();
             this.menuContent = new System.Windows.Forms.ToolStripMenuItem();
             this.menuTextures = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuRooms = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuAddRoom = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuRemoveRoom = new System.Windows.Forms.ToolStripMenuItem();
             this.menuView = new System.Windows.Forms.ToolStripMenuItem();
             this.menuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.menuAbout = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,24 +73,47 @@
             this.statusCamera = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusBrush = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.toolSelect = new System.Windows.Forms.ToolStripButton();
+            this.toolMove = new System.Windows.Forms.ToolStripButton();
+            this.toolTexture = new System.Windows.Forms.ToolStripButton();
+            this.toolObject = new System.Windows.Forms.ToolStripButton();
+            this.toolErase = new System.Windows.Forms.ToolStripButton();
+            this.splitRight = new System.Windows.Forms.SplitContainer();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.tabRoom = new System.Windows.Forms.TabPage();
-            this.treeRoom = new System.Windows.Forms.TreeView();
             this.tabGlobal = new System.Windows.Forms.TabPage();
             this.treeGlobal = new System.Windows.Forms.TreeView();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.menuAddRoom = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabRoom = new System.Windows.Forms.TabPage();
+            this.treeRoom = new System.Windows.Forms.TreeView();
+            this.panelRight = new System.Windows.Forms.Panel();
+            this.contextMenuRoom = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.contextMenuRoomRemove = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuRooms.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            this.toolStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitRight)).BeginInit();
+            this.splitRight.Panel1.SuspendLayout();
+            this.splitRight.SuspendLayout();
             this.tabControl.SuspendLayout();
-            this.tabRoom.SuspendLayout();
             this.tabGlobal.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.tabRoom.SuspendLayout();
+            this.panelRight.SuspendLayout();
+            this.contextMenuRoom.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // contextMenuRooms
+            // 
+            this.contextMenuRooms.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.contextMenuRoomsAdd});
+            this.contextMenuRooms.Name = "contextMenuRooms";
+            this.contextMenuRooms.Size = new System.Drawing.Size(132, 26);
+            // 
+            // contextMenuRoomsAdd
+            // 
+            this.contextMenuRoomsAdd.Name = "contextMenuRoomsAdd";
+            this.contextMenuRoomsAdd.Size = new System.Drawing.Size(131, 22);
+            this.contextMenuRoomsAdd.Text = "Add Room";
+            this.contextMenuRoomsAdd.Click += new System.EventHandler(this.contextMenuRoomsAdd_Click);
             // 
             // EditorPanel
             // 
@@ -101,8 +129,8 @@
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuFile,
             this.menuEdit,
-            this.menuRooms,
             this.menuContent,
+            this.menuRooms,
             this.menuView,
             this.menuHelp});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
@@ -263,14 +291,6 @@
             this.menuSelectAll.Size = new System.Drawing.Size(144, 22);
             this.menuSelectAll.Text = "Select &All";
             // 
-            // menuRooms
-            // 
-            this.menuRooms.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuAddRoom});
-            this.menuRooms.Name = "menuRooms";
-            this.menuRooms.Size = new System.Drawing.Size(56, 20);
-            this.menuRooms.Text = "&Rooms";
-            // 
             // menuContent
             // 
             this.menuContent.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -282,9 +302,32 @@
             // menuTextures
             // 
             this.menuTextures.Name = "menuTextures";
-            this.menuTextures.Size = new System.Drawing.Size(152, 22);
+            this.menuTextures.Size = new System.Drawing.Size(118, 22);
             this.menuTextures.Text = "Textures";
             this.menuTextures.Click += new System.EventHandler(this.menuTextures_Click);
+            // 
+            // menuRooms
+            // 
+            this.menuRooms.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuAddRoom,
+            this.menuRemoveRoom});
+            this.menuRooms.Name = "menuRooms";
+            this.menuRooms.Size = new System.Drawing.Size(56, 20);
+            this.menuRooms.Text = "&Rooms";
+            // 
+            // menuAddRoom
+            // 
+            this.menuAddRoom.Name = "menuAddRoom";
+            this.menuAddRoom.Size = new System.Drawing.Size(117, 22);
+            this.menuAddRoom.Text = "&Add";
+            this.menuAddRoom.Click += new System.EventHandler(this.menuAddRoom_Click);
+            // 
+            // menuRemoveRoom
+            // 
+            this.menuRemoveRoom.Name = "menuRemoveRoom";
+            this.menuRemoveRoom.Size = new System.Drawing.Size(117, 22);
+            this.menuRemoveRoom.Text = "&Remove";
+            this.menuRemoveRoom.Click += new System.EventHandler(this.menuRemoveRoom_Click);
             // 
             // menuView
             // 
@@ -309,9 +352,10 @@
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusMouse,
-            this.statusCamera,
-            this.statusBrush});
+                this.statusMouse,
+                this.statusCamera,
+                this.statusBrush
+            });
             this.statusStrip.Location = new System.Drawing.Point(0, 768);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(1628, 22);
@@ -338,76 +382,98 @@
             // 
             // toolStrip
             // 
+            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolSelect,
+            this.toolMove,
+            this.toolTexture,
+            this.toolObject,
+            this.toolErase});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(1628, 25);
             this.toolStrip.TabIndex = 11;
             this.toolStrip.Text = "toolStrip";
             // 
-            // splitContainer1
+            // toolSelect
             // 
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.toolSelect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolSelect.Image = ((System.Drawing.Image)(resources.GetObject("toolSelect.Image")));
+            this.toolSelect.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolSelect.Name = "toolSelect";
+            this.toolSelect.Size = new System.Drawing.Size(23, 22);
+            this.toolSelect.Text = "Select";
+            this.toolSelect.Click += new System.EventHandler(this.toolSelect_Click);
             // 
-            // splitContainer1.Panel1
+            // toolMove
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.tabControl);
-            this.splitContainer1.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.toolMove.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolMove.Image = global::GameEngine2D.Properties.Resources.move;
+            this.toolMove.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolMove.Name = "toolMove";
+            this.toolMove.Size = new System.Drawing.Size(23, 22);
+            this.toolMove.Text = "Move";
+            this.toolMove.Click += new System.EventHandler(this.toolMove_Click);
             // 
-            // splitContainer1.Panel2
+            // toolTexture
             // 
-            this.splitContainer1.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer1.Size = new System.Drawing.Size(347, 720);
-            this.splitContainer1.SplitterDistance = 360;
-            this.splitContainer1.TabIndex = 12;
+            this.toolTexture.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolTexture.Image = global::GameEngine2D.Properties.Resources.texture;
+            this.toolTexture.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolTexture.Name = "toolTexture";
+            this.toolTexture.Size = new System.Drawing.Size(23, 22);
+            this.toolTexture.Text = "Texture";
+            this.toolTexture.Click += new System.EventHandler(this.toolTexture_Click);
+            // 
+            // toolObject
+            // 
+            this.toolObject.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolObject.Image = global::GameEngine2D.Properties.Resources._object;
+            this.toolObject.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolObject.Name = "toolObject";
+            this.toolObject.Size = new System.Drawing.Size(23, 22);
+            this.toolObject.Text = "Object";
+            this.toolObject.Click += new System.EventHandler(this.toolObject_Click);
+            // 
+            // toolErase
+            // 
+            this.toolErase.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolErase.Image = global::GameEngine2D.Properties.Resources.erase;
+            this.toolErase.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolErase.Name = "toolErase";
+            this.toolErase.Size = new System.Drawing.Size(23, 22);
+            this.toolErase.Text = "Erase";
+            this.toolErase.Click += new System.EventHandler(this.toolErase_Click);
+            // 
+            // splitRight
+            // 
+            this.splitRight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitRight.Location = new System.Drawing.Point(0, 0);
+            this.splitRight.Name = "splitRight";
+            this.splitRight.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitRight.Panel1
+            // 
+            this.splitRight.Panel1.Controls.Add(this.tabControl);
+            this.splitRight.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            // 
+            // splitRight.Panel2
+            // 
+            this.splitRight.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.splitRight.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.splitRight.Size = new System.Drawing.Size(347, 720);
+            this.splitRight.SplitterDistance = 360;
+            this.splitRight.TabIndex = 12;
             // 
             // tabControl
             // 
-            this.tabControl.Controls.Add(this.tabRoom);
             this.tabControl.Controls.Add(this.tabGlobal);
+            this.tabControl.Controls.Add(this.tabRoom);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(347, 360);
             this.tabControl.TabIndex = 10;
-            // 
-            // tabRoom
-            // 
-            this.tabRoom.Controls.Add(this.treeRoom);
-            this.tabRoom.Location = new System.Drawing.Point(4, 22);
-            this.tabRoom.Name = "tabRoom";
-            this.tabRoom.Padding = new System.Windows.Forms.Padding(3);
-            this.tabRoom.Size = new System.Drawing.Size(339, 334);
-            this.tabRoom.TabIndex = 0;
-            this.tabRoom.Text = "Current Room";
-            this.tabRoom.UseVisualStyleBackColor = true;
-            // 
-            // treeRoom
-            // 
-            this.treeRoom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeRoom.Location = new System.Drawing.Point(3, 3);
-            this.treeRoom.Name = "treeRoom";
-            treeNode1.Name = "treeRoomObjects";
-            treeNode1.Text = "Objects";
-            treeNode2.Name = "treeRoomRooms";
-            treeNode2.Text = "Connected Rooms";
-            treeNode3.Name = "treeRoomEvents";
-            treeNode3.Text = "Events";
-            treeNode4.Name = "TreeRoomTriggers";
-            treeNode4.Text = "Triggers";
-            treeNode5.Name = "treeRoomVariables";
-            treeNode5.Text = "Variables";
-            this.treeRoom.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode3,
-            treeNode4,
-            treeNode5});
-            this.treeRoom.Size = new System.Drawing.Size(333, 328);
-            this.treeRoom.TabIndex = 9;
             // 
             // tabGlobal
             // 
@@ -425,37 +491,85 @@
             this.treeGlobal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeGlobal.Location = new System.Drawing.Point(3, 3);
             this.treeGlobal.Name = "treeGlobal";
-            treeNode6.Name = "treeGlobalRooms";
-            treeNode6.Text = "Rooms";
-            treeNode7.Name = "treeGlobalVariables";
-            treeNode7.Text = "Variables";
+            treeNode1.ContextMenuStrip = this.contextMenuRooms;
+            treeNode1.Name = "treeGlobalRooms";
+            treeNode1.Text = "Rooms";
+            treeNode2.Name = "treeGlobalVariables";
+            treeNode2.Text = "Variables";
             this.treeGlobal.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode6,
-            treeNode7});
+            treeNode1,
+            treeNode2});
             this.treeGlobal.Size = new System.Drawing.Size(333, 328);
             this.treeGlobal.TabIndex = 10;
+            this.treeGlobal.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeGlobal_NodeMouseClick);
             // 
-            // panel1
+            // tabRoom
             // 
-            this.panel1.Controls.Add(this.splitContainer1);
-            this.panel1.Location = new System.Drawing.Point(1279, 49);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(347, 720);
-            this.panel1.TabIndex = 13;
+            this.tabRoom.Controls.Add(this.treeRoom);
+            this.tabRoom.Location = new System.Drawing.Point(4, 22);
+            this.tabRoom.Name = "tabRoom";
+            this.tabRoom.Padding = new System.Windows.Forms.Padding(3);
+            this.tabRoom.Size = new System.Drawing.Size(339, 334);
+            this.tabRoom.TabIndex = 0;
+            this.tabRoom.Text = "Current Room";
+            this.tabRoom.UseVisualStyleBackColor = true;
             // 
-            // menuAddRoom
+            // treeRoom
             // 
-            this.menuAddRoom.Name = "menuAddRoom";
-            this.menuAddRoom.Size = new System.Drawing.Size(152, 22);
-            this.menuAddRoom.Text = "&Add Room";
-            this.menuAddRoom.Click += new System.EventHandler(this.menuAddRoom_Click);
+            this.treeRoom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeRoom.Location = new System.Drawing.Point(3, 3);
+            this.treeRoom.Name = "treeRoom";
+            treeNode3.Name = "treeRoomObjects";
+            treeNode3.Text = "Objects";
+            treeNode4.Name = "treeRoomRooms";
+            treeNode4.Text = "Connected Rooms";
+            treeNode5.Name = "treeRoomEvents";
+            treeNode5.Text = "Events";
+            treeNode6.Name = "TreeRoomTriggers";
+            treeNode6.Text = "Triggers";
+            treeNode7.Name = "treeRoomVariables";
+            treeNode7.Text = "Variables";
+            this.treeRoom.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode3,
+            treeNode4,
+            treeNode5,
+            treeNode6,
+            treeNode7});
+            this.treeRoom.Size = new System.Drawing.Size(333, 328);
+            this.treeRoom.TabIndex = 9;
+            // 
+            // panelRight
+            // 
+            this.panelRight.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelRight.Controls.Add(this.splitRight);
+            this.panelRight.Location = new System.Drawing.Point(1279, 49);
+            this.panelRight.Name = "panelRight";
+            this.panelRight.Size = new System.Drawing.Size(347, 720);
+            this.panelRight.TabIndex = 13;
+            // 
+            // contextMenuRoom
+            // 
+            this.contextMenuRoom.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.contextMenuRoomRemove});
+            this.contextMenuRoom.Name = "contextMenuRoom";
+            this.contextMenuRoom.Size = new System.Drawing.Size(118, 26);
+            this.contextMenuRoom.Text = "Remove";
+            // 
+            // contextMenuRoomRemove
+            // 
+            this.contextMenuRoomRemove.Name = "contextMenuRoomRemove";
+            this.contextMenuRoomRemove.Size = new System.Drawing.Size(117, 22);
+            this.contextMenuRoomRemove.Text = "Remove";
+            this.contextMenuRoomRemove.Click += new System.EventHandler(this.contextMenuRoomRemove_Click);
             // 
             // Editor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1628, 790);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelRight);
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.EditorPanel);
@@ -464,17 +578,21 @@
             this.Name = "Editor";
             this.Text = "Editor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Editor_FormClosing);
+            this.contextMenuRooms.ResumeLayout(false);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
+            this.toolStrip.ResumeLayout(false);
+            this.toolStrip.PerformLayout();
+            this.splitRight.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitRight)).EndInit();
+            this.splitRight.ResumeLayout(false);
             this.tabControl.ResumeLayout(false);
-            this.tabRoom.ResumeLayout(false);
             this.tabGlobal.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
+            this.tabRoom.ResumeLayout(false);
+            this.panelRight.ResumeLayout(false);
+            this.contextMenuRoom.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -513,15 +631,25 @@
         private System.Windows.Forms.ToolStripStatusLabel statusMouse;
         private System.Windows.Forms.ToolStripStatusLabel statusCamera;
         private System.Windows.Forms.ToolStripStatusLabel statusBrush;
-        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer splitRight;
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabRoom;
         private System.Windows.Forms.TreeView treeRoom;
         private System.Windows.Forms.TabPage tabGlobal;
         private System.Windows.Forms.TreeView treeGlobal;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelRight;
         private System.Windows.Forms.ToolStripMenuItem menuClose;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem menuAddRoom;
+        private System.Windows.Forms.ContextMenuStrip contextMenuRooms;
+        private System.Windows.Forms.ToolStripMenuItem contextMenuRoomsAdd;
+        private System.Windows.Forms.ToolStripMenuItem menuRemoveRoom;
+        private System.Windows.Forms.ContextMenuStrip contextMenuRoom;
+        private System.Windows.Forms.ToolStripMenuItem contextMenuRoomRemove;
+        private System.Windows.Forms.ToolStripButton toolSelect;
+        private System.Windows.Forms.ToolStripButton toolMove;
+        private System.Windows.Forms.ToolStripButton toolTexture;
+        private System.Windows.Forms.ToolStripButton toolObject;
+        private System.Windows.Forms.ToolStripButton toolErase;
     }
 }

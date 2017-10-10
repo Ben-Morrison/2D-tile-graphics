@@ -7,13 +7,6 @@ using System.Diagnostics;
 
 namespace GameEngine2D
 {
-    public enum EngineState
-    {
-        Stopped,
-        Initialized,
-        GameRunning
-    }
-
     public enum GameState
     {
         None,
@@ -29,10 +22,12 @@ namespace GameEngine2D
 
     public class StateManager
     {
-        private EngineState engineState;
+        private bool initialized;
+        private bool loopRunning;
         private GameState gameState;
 
         private bool editor;
+        private bool debug;
         private bool isDrawing = false;
 
         private float delta = 0.0f;
@@ -40,16 +35,22 @@ namespace GameEngine2D
 
         public StateManager(bool editor)
         {
-            engineState = GameEngine2D.EngineState.Stopped;
+            initialized = false;
             gameState = GameEngine2D.GameState.None;
 
             this.editor = editor;
         }
 
-        public EngineState EngineState
+        public bool Initialized
         {
-            get { return this.engineState; }
-            set { this.engineState = value; }
+            get { return this.initialized; }
+            set { this.initialized = value; }
+        }
+
+        public bool LoopRunning
+        {
+            get { return this.loopRunning; }
+            set { this.loopRunning = value; }
         }
 
         public GameState GameState
@@ -61,6 +62,12 @@ namespace GameEngine2D
         public bool Editor
         {
             get { return this.editor; }
+        }
+
+        public bool Debug
+        {
+            get { return this.debug; }
+            set { this.debug = value; }
         }
 
         public bool IsDrawing

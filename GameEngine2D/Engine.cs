@@ -17,7 +17,6 @@ namespace GameEngine2D
     {
         private Control form;
 
-        // Engine components
         private static StateManager stateManager;
         public static StateManager StateManager { get { return stateManager; } }
 
@@ -52,16 +51,16 @@ namespace GameEngine2D
 
         public void Initialize(bool editor)
         {
-            if (stateManager == null || stateManager.EngineState == EngineState.Stopped)
+            if (stateManager == null || !stateManager.Initialized)
             {
                 stateManager = new StateManager(editor);
                 screen = new Screen();
                 deviceManager = new DeviceManager(form, screen);
                 contentManager = new ContentManager(deviceManager.Device);
                 keyboardManager = new KeyboardManager(form);
-                dataManager = new GameEngine2D.DataManager();
-                stateManager.EngineState = EngineState.Initialized;
+                dataManager = new GameEngine2D.DataManager(new SaveText());
                 camera = new Camera(0, 0);
+                stateManager.Initialized = true;
 
                 if (editor)
                 {
@@ -78,64 +77,70 @@ namespace GameEngine2D
             }
         }
 
-        /// <summary>
-        /// Creates a new game
-        /// If a game is currently running
-        /// </summary>
-        /// <param name="path">The path of the file</param>
-        /// <param name="editor">Is the editor running</param>
-        /// <returns>Returns success or failure</returns>
+        public bool IsGameOpen()
+        {
+            return (stateManager.Initialized && game != null);
+        }
+
         public bool NewGame(string path, bool editor)
         {
-            if (Engine.game == null)
-            {
-                Engine.game = new Game();
-                bool success = dataManager.CreateFile(path);
+            if (IsGameOpen())
+                CloseGame();
 
-                if (success)
-                {
-                    Engine.StateManager.EngineState = EngineState.GameRunning;
-                    return success;
-                }
-                else
-                {
-                    CloseGame();
-                    return success;
-                }
+            Engine.game = new Game();
+            bool success = dataManager.CreateFile(path);
+
+            if (success)
+            {
+                return true;
             }
             else
             {
                 CloseGame();
-                Engine.game = new Game();
-                return dataManager.CreateFile(path);
+                return false;
             }
         }
 
         public bool OpenGame(string path, bool editor)
         {
-            if (game == null)
+            CloseGame();
+
+            SaveClass success =  DataManager.OpenFile(path);
+
+            if (success == null)
             {
-                
+                return false;
             }
             else
             {
-                CloseGame();
+                game = success.Game;
+
+                foreach (KeyValuePair<string, Texture> o in success.Textures)
+                {
+                    contentManager.AddTexture(o.Key, o.Value);
+                }
+
+                if (!editor)
+                    StartLoop();
+
+                return true;
             }
-
-            /*
-             * If a current game is open (not null), null the game and close the file
-             * Open a file with DataManager
-             * Get the data from the file
-             * Create the Game object from the file
-             * Keep the file open until the game is closed
-             */
-
-            // Return false if it failed
-            return false;
-        }
+        }            
 
         public bool SaveGame(string path)
         {
+            if (IsGameOpen())
+            {
+                bool success = dataManager.CreateFile(path);
+
+                if (success)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+
             /*
              * Check if the file exists
              * If exists close the file
@@ -146,39 +151,38 @@ namespace GameEngine2D
              */
 
             // Return false if it failed
-            return false;
         }
 
         public void CloseGame()
         {
             Engine.game = null;
+            contentManager.ClearContent();
             dataManager.CloseFile();
-            stateManager.EngineState = EngineState.Initialized;
         }
 
         public void Uninitialize()
         {
             StopLoop();
             CloseGame();
-            stateManager.EngineState = EngineState.Stopped;
+            stateManager.Initialized = false;
         }
 
         private void StartLoop()
         {
-            if (stateManager.EngineState == EngineState.Initialized)
+            if (IsGameOpen() && !stateManager.LoopRunning)
             {
-                stateManager.EngineState = EngineState.GameRunning;
-
                 thread = new Thread(new ThreadStart(GameLoop));
                 thread.Start();
+
+                stateManager.LoopRunning = true;
             }
         }
 
         public void StopLoop()
         {
-            if (stateManager.EngineState == EngineState.GameRunning)
+            if (stateManager.LoopRunning)
             {
-                stateManager.EngineState = EngineState.Initialized;
+                stateManager.LoopRunning = false;
 
                 while (stateManager.IsDrawing)
                 {
@@ -203,7 +207,7 @@ namespace GameEngine2D
 
             watch.Start();
 
-            while (stateManager.EngineState == EngineState.GameRunning)
+            while (stateManager.LoopRunning)
             {
                 startTime = watch.ElapsedMilliseconds;
                 stateManager.Delta = ((startTime - previousTime) / 1000.0f);
@@ -247,7 +251,7 @@ namespace GameEngine2D
 
         public void Draw()
         {
-            if (stateManager.EngineState == EngineState.GameRunning)
+            if (IsGameOpen())
             {
                 stateManager.IsDrawing = true;
 
@@ -266,7 +270,7 @@ namespace GameEngine2D
 
                 deviceManager.Device.EndScene();
 
-                if (stateManager.EngineState == EngineState.GameRunning)
+                if (IsGameOpen())
                     deviceManager.Device.Present();
 
                 stateManager.IsDrawing = false;

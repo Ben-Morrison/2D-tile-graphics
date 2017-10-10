@@ -8,19 +8,23 @@ using System.Windows.Forms;
 
 namespace GameEngine2D
 {
-    public class Room
+    public class Room : IDraw
     {
+        private string name;
+
         private Tile[,] tiles;
         private List<GameObject> objects;
 
-        public Room()
+        public Room(string name)
         {
+            this.name = name;
             this.tiles = new Tile[Default.DEFAULT_ROOM_SIZE_X, Default.DEFAULT_ROOM_SIZE_Y];
             this.objects = new List<GameObject>();
         }
 
-        public Room(int x, int y)
+        public Room(string name, int x, int y)
         {
+            this.name = name;
             this.tiles = new Tile[x, y];
             this.objects = new List<GameObject>();
 
@@ -31,6 +35,12 @@ namespace GameEngine2D
                     tiles[i, j] = new Tile(i, j);   
                 }
             }
+        }
+
+        public string Name
+        {
+            get { return this.name; }
+            set { this.name = value; }
         }
 
         public Tile[,] Tiles
@@ -73,16 +83,22 @@ namespace GameEngine2D
             Sprite sprite = new Sprite(s.Device);
             sprite.Begin(SpriteFlags.AlphaBlend);
 
-            Engine.ContentManager.DefaultFont.DrawText(sprite, "Tiles: " + (this.tiles.GetLength(0) * this.tiles.GetLength(1)), new Point(32, 32), Color.Red);
-            Engine.ContentManager.DefaultFont.DrawText(sprite, "Tile Draw Calls: " + count, new Point(32, 64), Color.Red);
+            if (Engine.StateManager.Editor || Engine.StateManager.Debug)
+            {
+                Engine.ContentManager.DefaultFont.DrawText(sprite, "Name: " + this.name, new Point(32, 32), Color.Red);
+                /*
+                Engine.ContentManager.DefaultFont.DrawText(sprite, "Tiles: " + (this.tiles.GetLength(0) * this.tiles.GetLength(1)), new Point(32, 64), Color.Red);
+                Engine.ContentManager.DefaultFont.DrawText(sprite, "Tile Draw Calls: " + count, new Point(32, 96), Color.Red);
 
-            Engine.ContentManager.DefaultFont.DrawText(sprite, "startX: " + startX, new Point(32, 96), Color.Red);
-            Engine.ContentManager.DefaultFont.DrawText(sprite, "startY: " + startY, new Point(32, 128), Color.Red);
+                Engine.ContentManager.DefaultFont.DrawText(sprite, "startX: " + startX, new Point(32, 128), Color.Red);
+                Engine.ContentManager.DefaultFont.DrawText(sprite, "startY: " + startY, new Point(32, 160), Color.Red);
 
-            Engine.ContentManager.DefaultFont.DrawText(sprite, "endX: " + endX, new Point(32, 160), Color.Red);
-            Engine.ContentManager.DefaultFont.DrawText(sprite, "endY: " + endY, new Point(32, 192), Color.Red);
+                Engine.ContentManager.DefaultFont.DrawText(sprite, "endX: " + endX, new Point(32, 192), Color.Red);
+                Engine.ContentManager.DefaultFont.DrawText(sprite, "endY: " + endY, new Point(32, 224), Color.Red);
 
-            Engine.ContentManager.DefaultFont.DrawText(sprite, "Camera: " + Engine.Camera.Position.X + ", " + Engine.Camera.Position.Y, new Point(32, 224), Color.Red);
+                Engine.ContentManager.DefaultFont.DrawText(sprite, "Camera: " + Engine.Camera.Position.X + ", " + Engine.Camera.Position.Y, new Point(32, 256), Color.Red);
+                */
+            }
 
             sprite.End();
             sprite.Dispose();

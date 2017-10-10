@@ -102,6 +102,7 @@
             // 
             // btnExit
             // 
+            this.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnExit.Location = new System.Drawing.Point(1112, 489);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
@@ -122,7 +123,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(918, 281);
+            this.label2.Location = new System.Drawing.Point(915, 230);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 22;
@@ -133,7 +134,7 @@
             this.listTextures.FormattingEnabled = true;
             this.listTextures.Location = new System.Drawing.Point(1068, 36);
             this.listTextures.Name = "listTextures";
-            this.listTextures.Size = new System.Drawing.Size(120, 251);
+            this.listTextures.Size = new System.Drawing.Size(120, 186);
             this.listTextures.TabIndex = 23;
             this.listTextures.SelectedIndexChanged += new System.EventHandler(this.listTextures_SelectedIndexChanged);
             // 
@@ -176,9 +177,9 @@
             // 
             // picPreview
             // 
-            this.picPreview.Location = new System.Drawing.Point(918, 297);
+            this.picPreview.Location = new System.Drawing.Point(918, 246);
             this.picPreview.Name = "picPreview";
-            this.picPreview.Size = new System.Drawing.Size(270, 186);
+            this.picPreview.Size = new System.Drawing.Size(270, 237);
             this.picPreview.TabIndex = 0;
             this.picPreview.TabStop = false;
             this.picPreview.Paint += new System.Windows.Forms.PaintEventHandler(this.picPreview_Paint);
@@ -249,8 +250,10 @@
             // 
             // TextureForm
             // 
+            this.AcceptButton = this.btnSelect;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnExit;
             this.ClientSize = new System.Drawing.Size(1199, 524);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);

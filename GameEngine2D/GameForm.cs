@@ -21,6 +21,10 @@ namespace GameEngine2D
         {
             InitializeComponent();
             engine = new Engine(this, false);
+            bool success = engine.OpenGame(Application.StartupPath + @"\save.gm", false);
+
+            if (!success)
+                MessageBox.Show("Could not load game");
         }
 
         private void GameForm_FormClosing(object sender, FormClosingEventArgs e)

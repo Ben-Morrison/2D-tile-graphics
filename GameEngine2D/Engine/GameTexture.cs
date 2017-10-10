@@ -38,6 +38,27 @@ namespace GameEngine2D
 
         private Rectangle[] rects;
 
+        public GameTexture()
+        {
+            this.sourceTexture = String.Empty;
+            this.textureType = TextureType.None;
+            this.animationType = AnimationType.None;
+
+            this.startX = 0;
+            this.startY = 0;
+
+            this.sizeX = Default.TILE_WIDTH;
+            this.sizeY = Default.TILE_WIDTH;
+
+            this.frames = 0;
+
+            this.rects = new Rectangle[4];
+            this.rects[0] = new Rectangle(0, 0, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+            this.rects[1] = new Rectangle(Default.SUBTILE_WIDTH, 0, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+            this.rects[2] = new Rectangle(0, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+            this.rects[3] = new Rectangle(Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH, Default.SUBTILE_WIDTH);
+        }
+
         public GameTexture(string sourceTexture, TextureType textureType)
         {
             this.sourceTexture = sourceTexture;

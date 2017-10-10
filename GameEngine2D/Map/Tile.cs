@@ -14,13 +14,22 @@ namespace GameEngine2D
         private Point position;
         private TileLayer[] layers;
 
+        public Tile()
+        {
+            this.position = new Point(0, 0);
+            this.layers = new TileLayer[2];
+
+            this.layers[0] = new TileLayer(new GameTexture("", TextureType.None));
+            this.layers[1] = new TileLayer(new GameTexture("", TextureType.None));
+        }
+
         public Tile(int x, int y)
         {
             this.position = new Point(x * Default.TILE_WIDTH, y * Default.TILE_WIDTH);
             this.layers = new TileLayer[2];
 
-            this.layers[0] = new TileLayer(new GameTexture("defalt", TextureType.None));
-            this.layers[1] = new TileLayer(new GameTexture("defalt", TextureType.None));
+            this.layers[0] = new TileLayer(new GameTexture("", TextureType.None));
+            this.layers[1] = new TileLayer(new GameTexture("", TextureType.None));
         }
 
         public Point Position
