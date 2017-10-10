@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Threading;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
+using System.IO;
 
 namespace GameEngine2D
 {
@@ -21,7 +22,11 @@ namespace GameEngine2D
         {
             InitializeComponent();
             engine = new Engine(this, false);
-            bool success = engine.OpenGame(Application.StartupPath + @"\save.gm", false);
+
+            string path = Application.StartupPath + @"\save.gm";
+            this.Text = Path.GetFileNameWithoutExtension(path);
+
+            bool success = engine.OpenGame(path, false);
 
             if (!success)
                 MessageBox.Show("Could not load game");
